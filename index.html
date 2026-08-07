@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Human Maintenance — Zrkadlo Bytia</title>
+    <style>
+        :root {
+            --bg-base: #0b0f1a;
+            --bg-card: #131b2e;
+            --border-subtle: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+        }
+        body.theme-female {
+            --accent-color: #f472b6;
+            --accent-glow: rgba(244, 114, 182, 0.15);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 40px 20px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease;
+        }
+        .wrapper { max-width: 820px; margin: 0 auto; }
+        .top-bar { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+        .lang-switch {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .lang-switch:hover { border-color: var(--accent-color); }
+        header { text-align: center; margin-bottom: 40px; }
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        header h1 small { display: block; font-size: 1rem; color: var(--text-muted); text-transform: none; letter-spacing: 1px; margin-top: 4px; }
+        header p { color: var(--text-muted); font-size: 0.95rem; letter-spacing: 0.5px; }
+        .card-input {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            transition: border-color 0.3s ease;
+        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full { grid-column: span 2; }
+        label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        input, select {
+            background: #060a14;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 14px 18px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .date-row { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 12px; }
+        .btn-submit {
+            background: var(--accent-color);
+            border: none;
+            color: #0b0f1a;
+            padding: 16px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            grid-column: span 2;
+            margin-top: 10px;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-submit:hover { transform: translateY(-2px); opacity: 0.9; }
+        .legal-disclaimer {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            text-align: justify;
+            margin-bottom: 40px;
+            padding: 0 10px;
+            opacity: 0.7;
+        }
+        .output-container { display: none; opacity: 0; transition: opacity 0.6s ease; }
+        .output-container.active { display: block; opacity: 1; }
+        .meta-bar {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            margin-bottom: 30px; padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .meta-pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .meta-pill strong { color: var(--accent-color); }
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent-color);
+            border-radius: 14px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--accent-glow), var(--bg-card));
+            transition: border-color 0.3s ease;
+        }
+        .result-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .result-card p { color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; }
+        .card-tag {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            background: #060a14;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+        }
+        @media (max-width: 650px) {
+            body { padding: 20px 12px; }
+            .card-input { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .full { grid-column: span 1; }
+            .btn-submit { grid-column: span 1; }
+            .date-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="theme-male">
+<div class="wrapper">
+    <div class="top-bar">
+        <button class="lang-switch" id="langToggleBtn" onclick="toggleLanguage()">🇬🇧 English</button>
+    </div>
+    <header>
+        <h1>The Human Maintenance <small>Zrkadlo Bytia</small></h1>
+        <p id="subtitle">Hĺbková syntéza podvedomých vzorcov, štruktúry a vnútornej suverenity</p>
+    </header>
+    <div class="card-input">
+        <div class="form-grid">
+            <div class="full">
+                <label id="lblFullName">Celé meno a priezvisko</label>
+                <input type="text" id="fullName" placeholder="napr. Július Kováč">
+            </div>
+            <div class="full">
+                <label id="lblBirthDate">Dátum narodenia</label>
+                <div class="date-row">
+                    <select id="birthDay"><option value="" id="optDay">Deň</option></select>
+                    <select id="birthMonth">
+                        <option value="" id="optMonth">Mesiac</option>
+                        <option value="1">Január</option><option value="2">Február</option>
+                        <option value="3">Marec</option><option value="4">Apríl</option>
+                        <option value="5">Máj</option><option value="6">Jún</option>
+                        <option value="7">Júl</option><option value="8">August</option>
+                        <option value="9">September</option><option value="10">Október</option>
+                        <option value="11">November</option><option value="12">December</option>
+                    </select>
+                    <select id="birthYear"><option value="" id="optYear">Rok</option></select>
+                </div>
+            </div>
+            <div class="full">
+                <label id="lblPolarity">Polarita systému</label>
+                <select id="genderSelect" onchange="updateTheme()">
+                    <option value="m" id="optMale">Mužský princíp (tlak / výkon / chlad)</option>
+                    <option value="f" id="optFemale">Ženský princíp (vnímavosť / obeta / tlak citu)</option>
+                </select>
+            </div>
+            <div class="full">
+                <label id="lblToday">Aktuálny dátum (dnes)</label>
+                <input type="date" id="todayDate">
+            </div>
+            <button class="btn-submit" id="btnSubmit" onclick="generateProfile()">Otvoriť analýzu profilu</button>
+        </div>
+    </div>
+    <div class="legal-disclaimer" id="legalText">
+        <strong>Ochrana súkromia a právne vyhlásenie:</strong> Táto aplikácia funguje výhradne lokálne vo vašom prehliadači. Žiadne osobné údaje sa neodosielajú na žiadny server, neukladajú sa a nie sú poskytované tretím stranám. Všetky dáta po zatvorení stránky zmiznú. <br><br>
+        <strong>Zrieknutie sa zodpovednosti:</strong> Výstupy slúžia výhradne na informačné a zábavné účely. Nejedná sa o odbornú diagnózu ani poradenstvo. Používaním súhlasíte s tým, že všetky rozhodnutia robíte na vlastnú zodpovednosť.
+    </div>
+    <div id="outputContainer" class="output-container">
+        <div class="meta-bar" id="metaTags"></div>
+        <div class="result-card"><h3 id="resChildTitle">1. Detstvo <span class="card-tag" id="tagChild">korene programu</span></h3><p id="resChild"></p></div>
+        <div class="result-card"><h3 id="resTeenTitle">2. Dospievanie <span class="card-tag" id="tagTeen">obranné štíty</span></h3><p id="resTeen"></p></div>
+        <div class="result-card"><h3 id="resAdultTitle">3. Dospelý vek <span class="card-tag" id="tagAdult">stabilizácia pozície</span></h3><p id="resAdult"></p></div>
+        <div class="result-card"><h3 id="resTodayTitle">4. Dodnes <span class="card-tag" id="tagToday">súčasný bod vedomia</span></h3><p id="resToday"></p></div>
+        <div class="result-card"><h3 id="resShadowTitle">5. Tieň (Temná stránka) <span class="card-tag" id="tagShadow">nekompromisné zrkadlo</span></h3><p id="resShadow"></p></div>
+        <div class="result-card"><h3 id="resFutureTitle">6. Budúcnosť <span class="card-tag" id="tagFuture">trajektória vývoja</span></h3><p id="resFuture"></p></div>
+        <div class="result-card"><h3 id="resMotivationTitle">7. Motivácia <span class="card-tag" id="tagMotivation">skutočný motor</span></h3><p id="resMotivation"></p></div>
+        <div class="result-card"><h3 id="resOverrideTitle">8. Etický Override <span class="card-tag" id="tagOverride">odpojenie od dogiem</span></h3><p id="resOverride"></p></div>
+        <div class="result-card"><h3 id="resRadarTitle">9. Energetický radar <span class="card-tag" id="tagRadar">priorita pre dnešok</span></h3><p id="resRadar"></p></div>
+        <div class="result-card"><h3 id="resDailyTitle">10. Denný kód rezonancie <span class="card-tag" id="tagDaily">aktuálna frekvencia</span></h3><p id="resDaily"></p></div>
+    </div>
+</div>
+<script>
+    let currentLang = 'sk';
+    const translations = {
+        sk: {
+            subtitle: "Hĺbková syntéza podvedomých vzorcov, štruktúry a vnútornej suverenity",
+            langBtn: "🇬🇧 English",
+            fullName: "Celé meno a priezvisko",
+            namePlaceholder: "napr. Július Kováč",
+            birthDate: "Dátum narodenia",
+            optDay: "Deň",
+            optMonth: "Mesiac",
+            optYear: "Rok",
+            polarity: "Polarita systému",
+            maleOpt: "Mužský princíp (tlak / výkon / chlad)",
+            femaleOpt: "Ženský princíp (vnímavosť / obeta / tlak citu)",
+            today: "Aktuálny dátum (dnes)",
+            submitBtn: "Otvoriť analýzu profilu",
+            legal: `<strong>Ochrana súkromia a právne vyhlásenie:</strong> Táto aplikácia funguje výhradne lokálne vo vašom prehliadači. Žiadne osobné údaje sa neodosielajú na žiadny server, neukladajú sa a nie sú poskytované tretím stranám. Všetky dáta po zatvorení stránky zmiznú. <br><br><strong>Zrieknutie sa zodpovednosti:</strong> Výstupy slúžia výhradne na informačné a zábavné účely. Nejedná sa o odbornú diagnózu ani poradenstvo. Používaním súhlasíte s tým, že všetky rozhodnutia robíte na vlastnú zodpovednosť.`,
+            months: ["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"],
+            child: "1. Detstvo",
+            teen: "2. Dospievanie",
+            adult: "3. Dospelý vek",
+            todayTitle: "4. Dodnes",
+            shadow: "5. Tieň (Temná stránka)",
+            future: "6. Budúcnosť",
+            motivation: "7. Motivácia",
+            override: "8. Etický Override",
+            radar: "9. Energetický radar",
+            daily: "10. Denný kód rezonancie",
+            tagChild: "korene programu",
+            tagTeen: "obranné štíty",
+            tagAdult: "stabilizácia pozície",
+            tagToday: "súčasný bod vedomia",
+            tagShadow: "nekompromisné zrkadlo",
+            tagFuture: "trajektória vývoja",
+            tagMotivation: "skutočný motor",
+            tagOverride: "odpojenie od dogiem",
+            tagRadar: "priorita pre dnešok",
+            tagDaily: "aktuálna frekvencia",
+            alert: "Prosím, vyplňte celé meno a kompletný dátum narodenia."
+        },
+        en: {
+            subtitle: "Deep synthesis of subconscious patterns, structure, and inner sovereignty",
+            langBtn: "🇸🇰 Slovenčina",
+            fullName: "Full Name",
+            namePlaceholder: "e.g. John Doe",
+            birthDate: "Date of Birth",
+            optDay: "Day",
+            optMonth: "Month",
+            optYear: "Year",
+            polarity: "System Polarity",
+            maleOpt: "Male Principle (Pressure / Output / Cold)",
+            femaleOpt: "Female Principle (Receptivity / Sacrifice / Emotion)",
+            today: "Current Date (today)",
+            submitBtn: "Open Profile Analysis",
+            legal: `<strong>Privacy & Legal Disclaimer:</strong> This application runs entirely locally within your browser. No personal data is sent to any server, stored, or shared. All data vanishes when the page is closed. <br><br><strong>Disclaimer of Liability:</strong> All outputs are for informational and entertainment purposes only. Not a professional diagnosis. By using, you agree that all decisions are your sole responsibility.`,
+            months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            child: "1. Childhood",
+            teen: "2. Adolescence",
+            adult: "3. Adulthood",
+            todayTitle: "4. Present",
+            shadow: "5. Shadow (Dark Side)",
+            future: "6. Future",
+            motivation: "7. Motivation",
+            override: "8. Ethical Override",
+            radar: "9. Energy Radar",
+            daily: "10. Daily Resonance Code",
+            tagChild: "roots of the program",
+            tagTeen: "defensive shields",
+            tagAdult: "position stabilization",
+            tagToday: "current point of consciousness",
+            tagShadow: "uncompromising mirror",
+            tagFuture: "development trajectory",
+            tagMotivation: "true engine",
+            tagOverride: "disconnection from dogmas",
+            tagRadar: "today's priority",
+            tagDaily: "current frequency",
+            alert: "Please fill in your full name and complete date of birth."
+        }
+    };
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'sk' ? 'en' : 'sk';
+        const t = translations[currentLang];
+        document.getElementById('subtitle').innerText = t.subtitle;
+        document.getElementById('langToggleBtn').innerText = t.langBtn;
+        document.getElementById('lblFullName').innerText = t.fullName;
+        document.getElementById('fullName').placeholder = t.namePlaceholder;
+        document.getElementById('lblBirthDate').innerText = t.birthDate;
+        document.getElementById('optDay').innerText = t.optDay;
+        document.getElementById('optMonth').innerText = t.optMonth;
+        document.getElementById('optYear').innerText = t.optYear;
+        document.getElementById('lblPolarity').innerText = t.polarity;
+        document.getElementById('optMale').innerText = t.maleOpt;
+        document.getElementById('optFemale').innerText = t.femaleOpt;
+        document.getElementById('lblToday').innerText = t.today;
+        document.getElementById('btnSubmit').innerText = t.submitBtn;
+        document.getElementById('legalText').innerHTML = t.legal;
+        const monthSel = document.getElementById('birthMonth');
+        for (let i=1; i<=12; i++) monthSel.options[i].text = t.months[i-1];
+        document.getElementById('resChildTitle').innerHTML = `${t.child} <span class="card-tag" id="tagChild">${t.tagChild}</span>`;
+        document.getElementById('resTeenTitle').innerHTML = `${t.teen} <span class="card-tag" id="tagTeen">${t.tagTeen}</span>`;
+        document.getElementById('resAdultTitle').innerHTML = `${t.adult} <span class="card-tag" id="tagAdult">${t.tagAdult}</span>`;
+        document.getElementById('resTodayTitle').innerHTML = `${t.todayTitle} <span class="card-tag" id="tagToday">${t.tagToday}</span>`;
+        document.getElementById('resShadowTitle').innerHTML = `${t.shadow} <span class="card-tag" id="tagShadow">${t.tagShadow}</span>`;
+        document.getElementById('resFutureTitle').innerHTML = `${t.future} <span class="card-tag" id="tagFuture">${t.tagFuture}</span>`;
+        document.getElementById('resMotivationTitle').innerHTML = `${t.motivation} <span class="card-tag" id="tagMotivation">${t.tagMotivation}</span>`;
+        document.getElementById('resOverrideTitle').innerHTML = `${t.override} <span class="card-tag" id="tagOverride">${t.tagOverride}</span>`;
+        document.getElementById('resRadarTitle').innerHTML = `${t.radar} <span class="card-tag" id="tagRadar">${t.tagRadar}</span>`;
+        document.getElementById('resDailyTitle').innerHTML = `${t.daily} <span class="card-tag" id="tagDaily">${t.tagDaily}</span>`;
+    }
+
+    function updateTheme() {
+        const g = document.getElementById('genderSelect').value;
+        document.body.className = g === 'f' ? 'theme-female' : 'theme-male';
+        try { localStorage.setItem('thm_theme', g); } catch(e) {}
+    }
+
+    (function init() {
+        const daySel = document.getElementById('birthDay');
+        for (let i=1; i<=31; i++) { let o=document.createElement('option'); o.value=i; o.textContent=i; daySel.appendChild(o); }
+        const yearSel = document.getElementById('birthYear');
+        const curYear = new Date().getFullYear();
+        for (let y=curYear; y>=1920; y--) { let o=document.createElement('option'); o.value=y; o.textContent=y; yearSel.appendChild(o); }
+        document.getElementById('todayDate').valueAsDate = new Date();
+        try { const saved = localStorage.getItem('thm_theme'); if (saved) document.getElementById('genderSelect').value = saved; } catch(e) {}
+        updateTheme();
+    })();
+
+    function numerologySum(str) {
+        let sum=0;
+        for (let ch of str) { let d=parseInt(ch); if (!isNaN(d)) sum+=d; }
+        while (sum>9 && sum!==11 && sum!==22 && sum!==33) {
+            sum = String(sum).split('').reduce((a,b)=>parseInt(a)+parseInt(b),0);
+        }
+        return sum;
+    }
+
+    function nameToNumber(name) {
+        const map={'a':1,'á':1,'ä':1,'b':2,'c':3,'č':3,'d':4,'ď':4,'e':5,'é':5,'ě':5,
+            'f':6,'g':7,'h':8,'ch':8,'i':9,'í':9,'j':1,'k':2,'l':3,'m':4,'n':5,
+            'ň':5,'o':6,'ó':6,'ô':6,'p':7,'q':8,'r':9,'ř':9,'s':1,'š':1,'t':2,
+            'ť':2,'u':3,'ú':3,'ů':3,'v':4,'w':5,'x':6,'y':7,'ý':7,'z':8,'ž':8};
+        let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g,'');
+        let sum=0; for (let ch of clean) if(map[ch]) sum+=map[ch];
+        while (sum>9 && sum!==11 && sum!==22 && sum!==33) {
+            sum = String(sum).split('').reduce((a,b)=>parseInt(a)+parseInt(b),0);
+        }
+        return sum;
+    }
+
+    const DB = {
+        sk: {
+            childhood: [
+                "Už v detstve ste veľmi skoro pochopili, že svet nie je priestor bezpodmienečnej istoty, ale miesto, kde sa musíte naučiť stáť na vlastných nohách. Boli ste citlivý pozorovateľ atmosféry okolo seba – vnímali ste každé napätie skôr, než sa prejavilo navonok. Táto skúsenosť vo vás prebudila hlbokú samostatnosť a tichú obranu.",
+                "V detských rokoch niesli ste vnútornú nutnosť dokazovať svoju hodnotu. Vaše vnútro vyžadovalo porozumenie, ktoré často nenašlo odozvu, a tak ste si vybudovali pevný vnútorný svet. Už vtedy sa rodila vaša potreba kontrolovať situácie, aby ste predišli pocitu bezmocnosti.",
+                "Detstvo pre vás znamenalo tichý boj medzi túžbou po prijatí a potrebou slobody. Skoro ste pochopili, že spoliehať sa na druhých prináša riziko sklamania. Tento základ zformoval vašu schopnosť niesť zodpovednosť ďaleko za hranice vášho veku."
+            ],
+            teen: [
+                "Dospievanie bolo obdobím vnútorného vzdoru, kedy ste odmietali akceptovať povrchné pravidlá a autority bez hlbšieho zmyslu. Vaša myseľ napredovala rýchlejšie ako prostredie, v ktorom ste žili, čo vás často izolovalo. Vytvorili ste si štít nezávislosti, aby ste skryli svoju zraniteľnosť pred svetom.",
+                "V puberte sa naplno prejavila vaša potreba pevnej identity. Každý pokus okolia tlačiť vás do šablón narážal na odpor. Namiesto prispôsobenia sa väčšine ste radšej zvolili náročnejšiu cestu overovania si vlastných právd na základe vlastných chýb.",
+                "Dospievanie sa nieslo v znamení maskovania neistoty intelektom a chladným nadhľadom. Presne ste vedeli, kedy poukázať na nezmyselnosť cudzích názorov, čím ste si chránili svoje citlivé vnútro pred zranením."
+            ],
+            adult: [
+                "V dospelom veku ste prevzali plnú réžiu nad svojím životom, no za cenu obrovského vnútro-energetického nasadenia. Vybudovali ste si pozíciu, kde sa od vás očakáva sila a riešenie problémov druhých. Hlboko vnútri však občas cítite únavu z toho, že málokto vidí, koľko síl vás stojí udržiavať tento systém pokope.",
+                "Dospelosť pre vás znamenala prechod od vonkajších bojov k budovaniu skutočných hodnôt. Narážali ste na alibizmus a slabosť v okolí, čo vo vás vyvolávalo sklamanie, no zároveň vás to vyformovalo do podoby človeka, na ktorého sa dá spoľahnúť, aj keď ide do tuhého.",
+                "V dospelom veku ste prekukli ilúzie spoločenských očakávaní. Vaša pozornosť sa presunula k efektivite, pokoju a ochrane vlastného priestoru. Odstrihli ste všetko, čo nemalo hlbší význam, a zamerali ste sa na to, čo skutočne prináša výsledky."
+            ],
+            today: [
+                "Dnes stojíte v bode zásadného vnútorného zúčtovania. Odmietate ďalej udržiavať nefunkčné väzby a toxické kompromisy len preto, aby ste 'vyhoveli'. Vaša duša si pýta pravdu, pokoj a priestor dýchať bez neustáleho tlaku obhajovať sa pred ostatnými.",
+                "V súčasnosti presne vidíte cez pretvárku ľudí aj vlastné staré obranné programy. Máte obrovskú jasnosť, no zároveň vnímanú únavu z bojov minulosti. Prechádzate fázou, kde ticho a vnútorná stabilita majú väčšiu cenu ako snaha niekomu niečo dokazovať.",
+                "Dnes je vašou hlavnou úlohou nájsť rovnováhu medzi svojou silnou racionalitou a hlbokým vnútorným pokojom. Viete, kto ste, poznáte svoje slabé miesta a už sa nebojíte byť autentickí, aj keď to znamená stáť v niektorých veciach úplne sami."
+            ],
+            shadow: [
+                "Vaša temná stránka sa prejavuje v chvíľach, keď pod tlakom prepínate do arogancie intelektu a mrazivého odstupu. Máte tendenciu ľudí okolo seba súdiť z pozície 'kto to má viac premyslené' a vašou zbraňou býva ostrá, presne mierená pravda, ktorú hovoríte nie z lásky, ale preto, aby vaše ego pocítilo víťazstvo. Racionalizujete si vlastnú netrpezlivosť a tvrdosť tým, že 'vy ste aspoň úprimní'.",
+                "Váš tieň spočíva v hlboko zakorenenom presvedčení, že ak veci nevezmete pevne do rúk vy, tak zlyhajú. V stave ohrozenia sa meníte na nekompromisného kontrolóra, ktorý odsudzuje slabosť iných a každé vybočenie z pravidiel trestá tichým ignorovaním alebo cynizmom. Používate svoju inteligenciu ako pancier, ktorý vás chráni pred priznaním, že aj vy potrebujete podporu.",
+                "Temná stránka vás občas uväzní v tichej pýche a pocite, že ste na svete osamelý pozorovateľ, ktorému nikto nestíha. Namiesto spojenia s okolím volíte izolaciu a pohŕdanie systémom, čím si sami vytvárate bariéry, na ktoré sa potom sťažujete."
+            ],
+            future: [
+                "Budúcnosť prinesie hlboké uspokojenie a zber plodov vašej vnútornej práce, ak sa vzdáte potreby mať vo všetkom posledné slovo. Smerujete k tichej, prirodzenej moci, kde nebudete musieť bojovať o uznanie – vaše výsledky a pokoj budú hovoriť za vás.",
+                "Ďalšia fáza života vás vyzýva k prechodu od boja proti chybám sveta k budovaniu vlastného bezpečného prístavu. Získate hlbokú nezávislosť a rovnováhu, akonáhle prestanete plytvať energiou na nápravu ľudí, ktorí o to nestoja.",
+                "Vývoj speje k vnútornému prelomu a oslobodeniu od minulých bremien. Pred vami je obdobie, kedy sa vaše skúsenosti spoja s čistým zámerom tvoriť hodnoty, ktoré prežijú."
+            ],
+            motivation: [
+                "Vašou skutočnou hybnou silou je nezastaviteľná túžba po **pravde, slobode a vnútornej suverenite**. Neznášate manipuláciu, faloš a vnucovanie cudzích dogiem. Hná vás vnútorne presvedčenie, že musíte veci pochopiť do hĺbky a žiť život podľa vlastných pravidiel.",
+                "Hná vás potreba mať pevný bod v nestáhlom svete a ochrániť si svoju integritu. Vašou hnacou silou je neustále vzdelávanie, hľadanie podstaty a snaha nenechať sa zotročiť systémom ani vlastným strachom.",
+                "Motivuje vás hlboký hlad po zmysluplnosti. Neuspokojíte sa s polovičatými odpoveďami. Chcete vidieť veci jasne, čisto a bez príkras, čo vás poháňa vpred aj v momente, keď sú podmienky nepriaznivé."
+            ],
+            override: [
+                "Etický Override: Tento systém ruší všetky staré programy strachu, viny a závislosti od cudzích mienok. Odpájate sa od kolektívnych dogiem, masovej hystérie a potreby zapadať tam, kde strácate seba. Vaša voľba odteraz: Žiadne ďalšie kulty ani autority. Kráčate v mene vlastnej čistoty a pokoja, pričom konáte dobro tam, kde to má reálny zmysel.",
+                "Etický Override: Definitívne pretrhnutie reťazí. Uvedomte si, že skutočná sloboda neprichádza zvonka, ale z vnútornej rozhodnosti nekomplikovať si život cudzími drámami. Tento bod vás vracia k vašej esenciálnej sile – pomáhate tam, kde je to čisté, ale beriete si späť plnú zodpovednosť za vlastnú energiu.",
+                "Etický Override: Mentálny reštart a návrat k suverenite. Zbavujete sa potreby bojovať proti lžiam tohto sveta. Vašou najsilnejšou zbraňou už nie je odpor, ale absolútny vnútorný pokoj a život v pravde bez potreby presviedčať o nej iných."
+            ],
+            radar: [
+                "Dnešná absolútna priorita: Neplýtvať ani uncesou energie na konfrontácie s hlúposťou alebo cudzími emóciami. Ak sa objaví tlak, urobte krok vzad do ticha. Smerujte svoju silu výhradne do pokoja a dokončenia vlastných zámerov.",
+                "Dnes sa vyhnite pasci dokazovania svojej pravdy za každú cenu. Vesmír vám testuje mieru trpezlivosti. Zostaňte v chladnom, láskavom nadhľade a nenechte sa vtiahnuť do cudzích drám.",
+                "Dnes platí pravidlo: Menej rečí, viac čistého konania. Svoj ostrý intelekt dnes použite na upratanie vlastného priestoru, nie na hodnotenie okolia. Strážte si svoje hranice s úsmevom."
+            ],
+            daily: [
+                "Denný kód rezonancie ti pripomína, že tvoja stabilita je v tvojich rukách. Nenechaj sa vykoľajiť vonkajšími otrasmi – sú to len vlny na hladine.",
+                "Dnes sa sústreď na jednoduché veci: dych, ticho, jeden čistý krok. Tvoja energia sa sama usporiada, ak jej prestaneš prekážať.",
+                "Prijmi dnešok taký, aký je. Žiadny boj, žiadne presviedčanie. Tvoja prítomnosť hovorí viac než tisíce slov."
+            ]
+        },
+        en: {
+            childhood: [
+                "In childhood, you very early understood that the world is not a place of unconditional certainty, but a place where you must learn to stand on your own two feet. You were a sensitive observer of the atmosphere around you – you perceived every tension before it manifested outwardly. This experience awakened in you a deep self-reliance and quiet defense.",
+                "In your childhood years, you carried an inner necessity to prove your worth. Your inner self demanded understanding that often found no resonance, so you built a solid inner world. Even then, your need to control situations to avoid helplessness was born.",
+                "Childhood for you meant a quiet struggle between the desire for acceptance and the need for freedom. You understood early that relying on others brings the risk of disappointment. This foundation shaped your ability to take responsibility far beyond your age."
+            ],
+            teen: [
+                "Adolescence was a period of inner rebellion, when you refused to accept superficial rules and authorities without deeper meaning. Your mind advanced faster than the environment you lived in, which often isolated you. You created a shield of independence to hide your vulnerability from the world.",
+                "In puberty, your need for a firm identity fully manifested. Every attempt by your surroundings to push you into templates met resistance. Instead of conforming to the majority, you chose the more difficult path of verifying your own truths through your own mistakes.",
+                "Adolescence was marked by masking insecurity with intellect and cold detachment. You knew exactly when to point out the pointlessness of others' opinions, thereby protecting your sensitive inner self from injury."
+            ],
+            adult: [
+                "In adulthood, you took full control of your life, but at the cost of enormous inner energy expenditure. You built a position where strength and solving others' problems are expected of you. Deep inside, however, you sometimes feel fatigue because few see how much effort it costs you to keep this system together.",
+                "Adulthood for you meant a transition from external battles to building true values. You encountered alibism and weakness around you, which caused disappointment, yet at the same time shaped you into a person who can be relied upon, even when things get tough.",
+                "In adulthood, you saw through the illusions of societal expectations. Your attention shifted to efficiency, peace, and protecting your own space. You cut off everything that lacked deeper meaning and focused on what truly brings results."
+            ],
+            today: [
+                "Today you stand at a point of fundamental inner reckoning. You refuse to further maintain dysfunctional bonds and toxic compromises just to 'fit in'. Your soul demands truth, peace, and space to breathe without the constant pressure to defend yourself to others.",
+                "Currently, you see clearly through people's pretense and your own old defense programs. You have immense clarity, but also perceived fatigue from past battles. You are going through a phase where silence and inner stability are more valuable than trying to prove something to someone.",
+                "Today your main task is to find balance between your strong rationality and deep inner peace. You know who you are, you know your weak points, and you are no longer afraid to be authentic, even if it means standing completely alone in some things."
+            ],
+            shadow: [
+                "Your dark side manifests in moments when, under pressure, you switch into intellectual arrogance and freezing distance. You tend to judge people around you from the position of 'who has it more thought out' and your weapon is often sharp, precisely aimed truth, spoken not out of love but to let your ego feel victory. You rationalize your impatience and harshness by saying 'at least you are honest'.",
+                "Your shadow lies in the deeply rooted belief that if you don't take things firmly into your own hands, they will fail. In a state of threat, you turn into an uncompromising controller who condemns others' weakness and punishes every deviation from the rules with silent ignoring or cynicism. You use your intelligence as armor to protect you from admitting that you also need support.",
+                "The dark side sometimes traps you in quiet pride and the feeling that you are a lonely observer in the world that no one can keep up with. Instead of connecting with your surroundings, you choose isolation and contempt for the system, thereby creating barriers that you later complain about."
+            ],
+            future: [
+                "The future will bring deep satisfaction and the harvest of your inner work if you give up the need to have the last word in everything. You are heading toward quiet, natural power where you won't have to fight for recognition – your results and peace will speak for you.",
+                "The next phase of life calls you to transition from fighting the world's mistakes to building your own safe haven. You will gain deep independence and balance once you stop wasting energy on correcting people who don't want it.",
+                "Development is heading toward inner breakthrough and liberation from past burdens. Ahead of you is a period when your experiences will combine with pure intention to create values that will endure."
+            ],
+            motivation: [
+                "Your true driving force is an unstoppable desire for **truth, freedom, and inner sovereignty**. You cannot stand manipulation, falsehood, and the imposition of foreign dogmas. You are driven by the inner conviction that you must understand things deeply and live life by your own rules.",
+                "You are driven by the need to have a firm point in an unstable world and to protect your integrity. Your driving force is continuous learning, seeking essence, and the effort not to be enslaved by the system or your own fear.",
+                "You are motivated by a deep hunger for meaning. You are not satisfied with half-answers. You want to see things clearly, purely, and without embellishment, which pushes you forward even when conditions are unfavorable."
+            ],
+            override: [
+                "Ethical Override: This system cancels all old programs of fear, guilt, and dependence on others' opinions. You disconnect from collective dogmas, mass hysteria, and the need to fit in where you lose yourself. Your choice from now on: No more cults or authorities. You walk in the name of your own purity and peace, while doing good where it truly matters.",
+                "Ethical Override: Definitive breaking of chains. Realize that true freedom does not come from outside, but from the inner determination not to complicate your life with others' dramas. This point returns you to your essential strength – you help where it is pure, but take back full responsibility for your own energy.",
+                "Ethical Override: Mental restart and return to sovereignty. You free yourself from the need to fight against the lies of this world. Your strongest weapon is no longer resistance, but absolute inner peace and living in truth without needing to convince others of it."
+            ],
+            radar: [
+                "Today's absolute priority: Not to waste an ounce of energy on confrontations with stupidity or others' emotions. If pressure arises, take a step back into silence. Direct your strength exclusively to peace and completing your own intentions.",
+                "Today, avoid the trap of proving your truth at all costs. The universe is testing your patience. Stay in a cool, loving detachment and don't get drawn into others' dramas.",
+                "Today's rule: Less talk, more pure action. Use your sharp intellect today to clean your own space, not to judge your surroundings. Guard your boundaries with a smile."
+            ],
+            daily: [
+                "The daily resonance code reminds you that your stability is in your hands. Don't let external shocks derail you – they are just ripples.",
+                "Today focus on simple things: breath, silence, one clear step. Your energy will organize itself if you stop obstructing it.",
+                "Accept today as it is. No fight, no persuasion. Your presence speaks louder than words."
+            ]
+        }
+    };
+
+    window.generateProfile = function() {
+        const name = document.getElementById('fullName').value.trim();
+        const day = document.getElementById('birthDay').value;
+        const month = document.getElementById('birthMonth').value;
+        const year = document.getElementById('birthYear').value;
+        const today = document.getElementById('todayDate').value;
+        const gender = document.getElementById('genderSelect').value;
+        const t = translations[currentLang];
+
+        if (!name || !day || !month || !year) {
+            alert(t.alert);
+            return;
+        }
+
+        const birthStr = `${year}${month.padStart(2,'0')}${day.padStart(2,'0')}`;
+        const lifePath = numerologySum(birthStr);
+        const destiny = nameToNumber(name);
+        const genderOffset = gender === 'f' ? 1 : 0;
+        const seed = (lifePath * 7 + destiny * 13 + parseInt(year) + genderOffset) % 3;
+        const langDb = DB[currentLang];
+
+        document.getElementById('metaTags').innerHTML = `
+            <div class="meta-pill">${currentLang === 'sk' ? 'Subjekt' : 'Subject'}: <strong>${name}</strong></div>
+            <div class="meta-pill">${currentLang === 'sk' ? 'Životný kód' : 'Life Code'}: <strong>${lifePath}</strong></div>
+            <div class="meta-pill">${currentLang === 'sk' ? 'Rezonancia osudu' : 'Destiny Resonance'}: <strong>${destiny}</strong></div>
+            <div class="meta-pill">${currentLang === 'sk' ? 'Polarita' : 'Polarity'}: <strong>${gender === 'm' ? (currentLang === 'sk' ? 'Muž' : 'Male') : (currentLang === 'sk' ? 'Žena' : 'Female')}</strong></div>
+        `;
+
+        document.getElementById('resChild').innerText = langDb.childhood[seed];
+        document.getElementById('resTeen').innerText = langDb.teen[(seed+1)%3];
+        document.getElementById('resAdult').innerText = langDb.adult[(seed+2)%3];
+        document.getElementById('resToday').innerText = langDb.today[seed];
+        document.getElementById('resShadow').innerText = langDb.shadow[(seed+1)%3];
+        document.getElementById('resFuture').innerText = langDb.future[(seed+2)%3];
+        document.getElementById('resMotivation').innerText = langDb.motivation[seed];
+        document.getElementById('resOverride').innerText = langDb.override[seed];
+
+        const dayNumber = numerologySum(today.replace(/-/g,'') + lifePath);
+        document.getElementById('resRadar').innerHTML = `<strong>${currentLang === 'sk' ? 'Denný kód rezonancie' : 'Daily Resonance Code'}: ${dayNumber}</strong> — ${langDb.radar[(seed+dayNumber)%3]}`;
+        document.getElementById('resDaily').innerText = langDb.daily[(seed+dayNumber)%3];
+
+        document.getElementById('outputContainer').classList.add('active');
+        document.getElementById('outputContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+</script>
+</body>
+</html>
