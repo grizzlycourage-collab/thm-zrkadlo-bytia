@@ -51,7 +51,6 @@
             overflow: hidden;
         }
 
-        /* HLAVIČKA */
         .header {
             display: flex;
             justify-content: space-between;
@@ -109,10 +108,8 @@
             box-shadow: 0 0 20px var(--glow);
         }
 
-        /* FORMULÁR */
         .form-section {
             margin-bottom: 6px;
-            transition: opacity 0.5s;
         }
 
         .form-section.hidden {
@@ -180,7 +177,6 @@
             box-shadow: 0 0 0 3px var(--glow);
         }
 
-        /* PREPÍNANIE POHLAVIA */
         .gender-toggle {
             display: flex;
             gap: 10px;
@@ -209,7 +205,6 @@
             box-shadow: 0 0 20px var(--glow);
         }
 
-        /* TLAČIDLO */
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -232,7 +227,6 @@
             box-shadow: 0 0 50px var(--glow);
         }
 
-        /* VÝSLEDKY */
         .results-container {
             display: none;
             margin-top: 10px;
@@ -244,40 +238,27 @@
         }
 
         @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .card {
+        .result-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 24px 22px;
+            padding: 22px 20px;
             margin-bottom: 14px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: border-color 0.3s;
         }
 
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card .phase {
+        .result-card .phase {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
-        .card .phase h3 {
+        .result-card .phase h3 {
             font-size: 0.8rem;
             font-weight: 700;
             letter-spacing: 1px;
@@ -285,7 +266,7 @@
             color: var(--accent);
         }
 
-        .card .phase .tag {
+        .result-card .phase .tag {
             font-size: 0.55rem;
             color: var(--muted);
             background: rgba(255, 255, 255, 0.04);
@@ -294,59 +275,34 @@
             border: 1px solid var(--border);
         }
 
-        .card p {
+        .result-card p {
             font-size: 0.95rem;
             line-height: 1.7;
             color: #d0d8e8;
             margin-top: 4px;
         }
 
-        /* PROGRESS */
-        .progress-dots {
+        .meta-bar {
             display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 16px 0 12px;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .progress-dots .dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: var(--border);
-            transition: 0.3s;
-        }
-
-        .progress-dots .dot.active {
-            background: var(--accent);
-            box-shadow: 0 0 16px var(--glow);
-            transform: scale(1.2);
-        }
-
-        .progress-dots .dot.done {
-            background: var(--accent);
-            opacity: 0.3;
-        }
-
-        .btn-next {
-            display: block;
-            width: 100%;
-            padding: 14px;
+        .meta-pill {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-            letter-spacing: 1px;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: var(--muted);
         }
 
-        .btn-next:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent);
+        .meta-pill strong {
+            color: var(--accent);
+            font-weight: 600;
         }
 
         .btn-restart {
@@ -369,7 +325,6 @@
             color: #fff;
         }
 
-        /* PÄTA */
         .footer {
             margin-top: 28px;
             padding-top: 14px;
@@ -395,11 +350,11 @@
                 font-size: 1.2rem;
             }
 
-            .card {
-                padding: 18px 14px;
+            .result-card {
+                padding: 16px 14px;
             }
 
-            .card p {
+            .result-card p {
                 font-size: 0.9rem;
             }
 
@@ -426,10 +381,9 @@
 </head>
 <body>
 <div class="app" id="app">
-    <!-- HLAVIČKA -->
     <div class="header">
         <div class="logo">
-            <h1>Zrkadlo Bytia</h1>
+            <h1 id="appTitle">Zrkadlo Bytia</h1>
             <span id="subBrand">The Human Maintenance</span>
         </div>
         <div class="lang-selector" id="langSelector">
@@ -440,7 +394,6 @@
         </div>
     </div>
 
-    <!-- FORMULÁR -->
     <div class="form-section" id="formSection">
         <div class="form-group">
             <label id="lblName">Celé meno a priezvisko</label>
@@ -472,15 +425,12 @@
         <button class="btn-primary" id="btnStart">✦ Otvoriť analýzu</button>
     </div>
 
-    <!-- VÝSLEDKY -->
     <div class="results-container" id="resultsContainer">
+        <div class="meta-bar" id="metaTags"></div>
         <div id="cardsWrapper"></div>
-        <div class="progress-dots" id="progressDots"></div>
-        <button class="btn-next" id="btnNext">Pokračovať →</button>
         <button class="btn-restart" id="btnRestart">↺ Začať odznova</button>
     </div>
 
-    <!-- PÄTA -->
     <div class="footer">
         <strong>Grizzly Courage</strong> · The Human Maintenance
     </div>
@@ -490,11 +440,9 @@
     (function() {
         'use strict';
 
-        // ============================================================
-        // 1. JAZYKY
-        // ============================================================
         const LANG = {
             sk: {
+                title: 'Zrkadlo Bytia',
                 brand: 'The Human Maintenance',
                 name: 'Celé meno a priezvisko',
                 namePlaceholder: 'napr. Július Kováč',
@@ -503,9 +451,14 @@
                 male: '⚡ Muž',
                 female: '🌸 Žena',
                 start: '✦ Otvoriť analýzu',
-                next: 'Pokračovať →',
                 restart: '↺ Začať odznova',
                 alert: 'Prosím, vyplňte meno a dátum narodenia.',
+                subject: 'Subjekt',
+                lifeCode: 'Životný kód',
+                destiny: 'Rezonancia osudu',
+                polarity: 'Polarita',
+                maleLabel: 'Muž',
+                femaleLabel: 'Žena',
                 phases: [
                     'Detstvo', 'Dospievanie', 'Dospelý vek', 'Dodnes',
                     'Tieň', 'Budúcnosť', 'Motivácia', 'Etický Override',
@@ -520,6 +473,7 @@
                 ]
             },
             en: {
+                title: 'Mirror of Being',
                 brand: 'The Human Maintenance',
                 name: 'Full Name',
                 namePlaceholder: 'e.g. John Doe',
@@ -528,9 +482,14 @@
                 male: '⚡ Male',
                 female: '🌸 Female',
                 start: '✦ Open Analysis',
-                next: 'Continue →',
                 restart: '↺ Start Over',
                 alert: 'Please fill in your name and date of birth.',
+                subject: 'Subject',
+                lifeCode: 'Life Code',
+                destiny: 'Destiny Resonance',
+                polarity: 'Polarity',
+                maleLabel: 'Male',
+                femaleLabel: 'Female',
                 phases: [
                     'Childhood', 'Adolescence', 'Adulthood', 'Present',
                     'Shadow', 'Future', 'Motivation', 'Ethical Override',
@@ -545,6 +504,7 @@
                 ]
             },
             de: {
+                title: 'Spiegel des Seins',
                 brand: 'The Human Maintenance',
                 name: 'Vollständiger Name',
                 namePlaceholder: 'z.B. Julius Kováč',
@@ -553,9 +513,14 @@
                 male: '⚡ Männlich',
                 female: '🌸 Weiblich',
                 start: '✦ Analyse öffnen',
-                next: 'Weiter →',
                 restart: '↺ Neu beginnen',
                 alert: 'Bitte geben Sie Namen und Geburtsdatum ein.',
+                subject: 'Subjekt',
+                lifeCode: 'Lebenscode',
+                destiny: 'Schicksalsresonanz',
+                polarity: 'Polarität',
+                maleLabel: 'Männlich',
+                femaleLabel: 'Weiblich',
                 phases: [
                     'Kindheit', 'Jugend', 'Erwachsenenalter', 'Heute',
                     'Schatten', 'Zukunft', 'Motivation', 'Ethischer Override',
@@ -570,6 +535,7 @@
                 ]
             },
             cz: {
+                title: 'Zrcadlo Bytí',
                 brand: 'The Human Maintenance',
                 name: 'Celé jméno a příjmení',
                 namePlaceholder: 'např. Julius Kováč',
@@ -578,9 +544,14 @@
                 male: '⚡ Muž',
                 female: '🌸 Žena',
                 start: '✦ Otevřít analýzu',
-                next: 'Pokračovat →',
                 restart: '↺ Začít znovu',
                 alert: 'Prosím, vyplňte jméno a datum narození.',
+                subject: 'Subjekt',
+                lifeCode: 'Životní kód',
+                destiny: 'Rezonance osudu',
+                polarity: 'Polarita',
+                maleLabel: 'Muž',
+                femaleLabel: 'Žena',
                 phases: [
                     'Dětství', 'Dospívání', 'Dospělost', 'Dodnes',
                     'Stín', 'Budoucnost', 'Motivace', 'Etický Override',
@@ -599,9 +570,47 @@
         let currentLang = 'sk';
         let currentGender = 'm';
 
-        // ============================================================
-        // 2. DATABÁZA TEXTOV
-        // ============================================================
+        function getAdjustedBirthDate(year, month, day) {
+            const d = new Date(year, month - 1, day);
+            d.setDate(d.getDate() - 88);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${y}${m}${dd}`;
+        }
+
+        function numerologySum(str) {
+            let sum = 0;
+            for (let ch of str) {
+                let d = parseInt(ch);
+                if (!isNaN(d)) sum += d;
+            }
+            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            }
+            return sum;
+        }
+
+        function nameToNumber(name) {
+            const map = {
+                'a': 1, 'á': 1, 'ä': 1, 'b': 2, 'c': 3, 'č': 3, 'd': 4, 'ď': 4,
+                'e': 5, 'é': 5, 'ě': 5, 'f': 6, 'g': 7, 'h': 8, 'ch': 8, 'i': 9,
+                'í': 9, 'j': 1, 'k': 2, 'l': 3, 'm': 4, 'n': 5, 'ň': 5, 'o': 6,
+                'ó': 6, 'ô': 6, 'p': 7, 'q': 8, 'r': 9, 'ř': 9, 's': 1, 'š': 1,
+                't': 2, 'ť': 2, 'u': 3, 'ú': 3, 'ů': 3, 'v': 4, 'w': 5, 'x': 6,
+                'y': 7, 'ý': 7, 'z': 8, 'ž': 8
+            };
+            let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g, '');
+            let sum = 0;
+            for (let ch of clean) {
+                if (map[ch]) sum += map[ch];
+            }
+            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            }
+            return sum;
+        }
+
         const TEXT_DB = {
             sk: {
                 childhood: [
@@ -813,55 +822,6 @@
             }
         };
 
-        // ============================================================
-        // 3. POMOCOVNÉ FUNKCIE
-        // ============================================================
-
-        function getAdjustedBirthDate(year, month, day) {
-            const d = new Date(year, month - 1, day);
-            d.setDate(d.getDate() - 88);
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            return `${y}${m}${dd}`;
-        }
-
-        function numerologySum(str) {
-            let sum = 0;
-            for (let ch of str) {
-                let d = parseInt(ch);
-                if (!isNaN(d)) sum += d;
-            }
-            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-                sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-            }
-            return sum;
-        }
-
-        function nameToNumber(name) {
-            const map = {
-                'a': 1, 'á': 1, 'ä': 1, 'b': 2, 'c': 3, 'č': 3, 'd': 4, 'ď': 4,
-                'e': 5, 'é': 5, 'ě': 5, 'f': 6, 'g': 7, 'h': 8, 'ch': 8, 'i': 9,
-                'í': 9, 'j': 1, 'k': 2, 'l': 3, 'm': 4, 'n': 5, 'ň': 5, 'o': 6,
-                'ó': 6, 'ô': 6, 'p': 7, 'q': 8, 'r': 9, 'ř': 9, 's': 1, 'š': 1,
-                't': 2, 'ť': 2, 'u': 3, 'ú': 3, 'ů': 3, 'v': 4, 'w': 5, 'x': 6,
-                'y': 7, 'ý': 7, 'z': 8, 'ž': 8
-            };
-            let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g, '');
-            let sum = 0;
-            for (let ch of clean) {
-                if (map[ch]) sum += map[ch];
-            }
-            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-                sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-            }
-            return sum;
-        }
-
-        // ============================================================
-        // 4. APLIKÁCIA
-        // ============================================================
-
         const app = {
             init() {
                 this.cacheDom();
@@ -879,23 +839,19 @@
                     birthYear: document.getElementById('birthYear'),
                     genderButtons: document.querySelectorAll('.gender-toggle button'),
                     btnStart: document.getElementById('btnStart'),
+                    btnRestart: document.getElementById('btnRestart'),
                     formSection: document.getElementById('formSection'),
                     resultsContainer: document.getElementById('resultsContainer'),
                     cardsWrapper: document.getElementById('cardsWrapper'),
-                    progressDots: document.getElementById('progressDots'),
-                    btnNext: document.getElementById('btnNext'),
-                    btnRestart: document.getElementById('btnRestart'),
+                    metaTags: document.getElementById('metaTags'),
+                    appTitle: document.getElementById('appTitle'),
                     subBrand: document.getElementById('subBrand'),
                 };
-                this.currentCard = -1;
-                this.totalCards = 10;
+                this.gender = 'm';
+                this.lang = 'sk';
                 this.seed = 0;
                 this.lifePath = 0;
                 this.destiny = 0;
-                this.gender = 'm';
-                this.name = '';
-                this.lang = 'sk';
-                this.cardsData = [];
             },
 
             bindEvents() {
@@ -916,8 +872,6 @@
 
                 this.dom.btnStart.addEventListener('click', () => this.startAnalysis());
 
-                this.dom.btnNext.addEventListener('click', () => this.nextCard());
-
                 this.dom.btnRestart.addEventListener('click', () => this.restart());
 
                 this.dom.fullName.addEventListener('keydown', (e) => {
@@ -926,7 +880,6 @@
             },
 
             populateDates() {
-                // Dni
                 const daySel = this.dom.birthDay;
                 for (let i = 1; i <= 31; i++) {
                     const opt = document.createElement('option');
@@ -935,7 +888,6 @@
                     daySel.appendChild(opt);
                 }
 
-                // Roky
                 const yearSel = this.dom.birthYear;
                 const curYear = new Date().getFullYear();
                 for (let y = curYear; y >= 1920; y--) {
@@ -955,6 +907,8 @@
                     btn.classList.toggle('active', btn.dataset.lang === lang);
                 });
 
+                this.dom.appTitle.textContent = t.title;
+                this.dom.subBrand.textContent = t.brand;
                 document.getElementById('lblName').textContent = t.name;
                 this.dom.fullName.placeholder = t.namePlaceholder;
                 document.getElementById('lblBirth').textContent = t.birth;
@@ -964,13 +918,7 @@
                     else btn.textContent = t.female;
                 });
                 this.dom.btnStart.textContent = t.start;
-                this.dom.btnNext.textContent = t.next;
                 this.dom.btnRestart.textContent = t.restart;
-                this.dom.subBrand.textContent = t.brand;
-
-                if (this.dom.resultsContainer.classList.contains('active')) {
-                    this.renderCards();
-                }
             },
 
             startAnalysis() {
@@ -984,115 +932,64 @@
                     return;
                 }
 
-                this.name = name;
-
-                // výpočet s korekciou 88 dní
                 const adjusted = getAdjustedBirthDate(parseInt(year), parseInt(month), parseInt(day));
                 this.lifePath = numerologySum(adjusted);
                 this.destiny = nameToNumber(name);
                 const genderOffset = this.gender === 'f' ? 1 : 0;
                 this.seed = (this.lifePath * 7 + this.destiny * 13 + parseInt(year) + genderOffset) % 3;
 
-                this.prepareCards();
-
-                this.dom.formSection.style.display = 'none';
-                this.dom.resultsContainer.classList.add('active');
-
-                this.currentCard = -1;
-                this.nextCard();
+                this.showResults(name);
             },
 
-            prepareCards() {
+            showResults(name) {
+                const t = LANG[this.lang];
                 const db = TEXT_DB[this.lang] || TEXT_DB.sk;
                 const s = this.seed;
-                const phases = LANG[this.lang].phases;
-                const tags = LANG[this.lang].tags;
-                const keys = ['childhood', 'teen', 'adult', 'today', 'shadow', 'future', 'motivation', 'override', 'radar', 'daily'];
+                const genderLabel = this.gender === 'm' ? t.maleLabel : t.femaleLabel;
 
-                this.cardsData = keys.map((key, idx) => {
+                // meta
+                this.dom.metaTags.innerHTML = `
+                    <span class="meta-pill">${t.subject}: <strong>${name}</strong></span>
+                    <span class="meta-pill">${t.lifeCode}: <strong>${this.lifePath}</strong></span>
+                    <span class="meta-pill">${t.destiny}: <strong>${this.destiny}</strong></span>
+                    <span class="meta-pill">${t.polarity}: <strong>${genderLabel}</strong></span>
+                `;
+
+                // karty
+                const keys = ['childhood', 'teen', 'adult', 'today', 'shadow', 'future', 'motivation', 'override', 'radar', 'daily'];
+                const phases = t.phases;
+                const tags = t.tags;
+                let html = '';
+
+                keys.forEach((key, idx) => {
                     const texts = db[key] || db.childhood;
                     const text = texts[s % texts.length];
                     const phaseName = phases[idx] || key;
                     const tagText = tags[idx] || '';
-                    return { phase: phaseName, tag: tagText, text };
-                });
-            },
-
-            renderCards() {
-                const wrapper = this.dom.cardsWrapper;
-                wrapper.innerHTML = '';
-                this.cardsData.forEach((card, idx) => {
-                    const div = document.createElement('div');
-                    div.className = 'card';
-                    div.dataset.index = idx;
-                    div.innerHTML = `
-                        <div class="phase">
-                            <h3>${card.phase}</h3>
-                            <span class="tag">${card.tag}</span>
+                    html += `
+                        <div class="result-card">
+                            <div class="phase">
+                                <h3>${idx + 1}. ${phaseName}</h3>
+                                <span class="tag">${tagText}</span>
+                            </div>
+                            <p>${text}</p>
                         </div>
-                        <p>${card.text}</p>
                     `;
-                    wrapper.appendChild(div);
-                });
-                this.updateDots();
-            },
-
-            updateDots() {
-                const container = this.dom.progressDots;
-                container.innerHTML = '';
-                for (let i = 0; i < this.totalCards; i++) {
-                    const dot = document.createElement('span');
-                    dot.className = 'dot';
-                    if (i === this.currentCard) dot.classList.add('active');
-                    else if (i < this.currentCard) dot.classList.add('done');
-                    container.appendChild(dot);
-                }
-                const t = LANG[this.lang];
-                if (this.currentCard === this.totalCards - 1) {
-                    this.dom.btnNext.textContent = '✧ Dokončiť';
-                } else {
-                    this.dom.btnNext.textContent = t.next;
-                }
-            },
-
-            nextCard() {
-                if (this.currentCard >= this.totalCards - 1) {
-                    return;
-                }
-
-                this.currentCard++;
-                const cards = this.dom.cardsWrapper.querySelectorAll('.card');
-                cards.forEach((card, idx) => {
-                    if (idx <= this.currentCard) {
-                        card.style.display = 'block';
-                        setTimeout(() => card.classList.add('visible'), 50);
-                    } else {
-                        card.classList.remove('visible');
-                        card.style.display = 'none';
-                    }
                 });
 
-                if (this.currentCard === this.totalCards - 1) {
-                    this.dom.btnNext.textContent = '✧ Dokončiť';
-                } else {
-                    this.dom.btnNext.textContent = LANG[this.lang].next;
-                }
+                this.dom.cardsWrapper.innerHTML = html;
 
-                this.updateDots();
-
-                const cardEl = cards[this.currentCard];
-                if (cardEl) {
-                    cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+                // skryť formulár, zobraziť výsledky
+                this.dom.formSection.style.display = 'none';
+                this.dom.resultsContainer.classList.add('active');
+                this.dom.resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
             },
 
             restart() {
                 this.dom.resultsContainer.classList.remove('active');
                 this.dom.formSection.style.display = 'block';
-                this.currentCard = -1;
                 this.dom.cardsWrapper.innerHTML = '';
-                this.dom.progressDots.innerHTML = '';
-                this.dom.btnNext.textContent = LANG[this.lang].next;
+                this.dom.metaTags.innerHTML = '';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         };
