@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Zrkadlo Bytia · The Human Maintenance</title>
     <style>
-        /* ===== RESET & ZÁKLAD ===== */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         :root {
-            --bg: #080b14;
-            --card-bg: #0f1629;
-            --border: #1e2a44;
+            --bg: #060810;
+            --card: #0d1428;
+            --border: #1e2a4a;
             --text: #e8edf5;
-            --muted: #7a8aa8;
+            --muted: #6a7a9a;
             --accent: #6d8cff;
             --glow: rgba(109, 140, 255, 0.15);
-            --radius: 20px;
-            --transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            --radius: 18px;
         }
 
         body {
@@ -32,148 +30,166 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            margin: 0;
+            padding: 16px;
             -webkit-font-smoothing: antialiased;
         }
 
+        body.female {
+            --accent: #f472b6;
+            --glow: rgba(244, 114, 182, 0.15);
+        }
+
         .app {
-            max-width: 700px;
+            max-width: 680px;
             width: 100%;
-            background: var(--card-bg);
+            background: var(--card);
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            padding: 30px 28px 20px;
+            padding: 28px 24px 20px;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
             position: relative;
             overflow: hidden;
-            transition: background 0.3s;
         }
 
-        /* ===== HLAVIČKA ===== */
+        /* HLAVIČKA */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .logo h1 {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             letter-spacing: 1px;
-            background: linear-gradient(135deg, #a0b8ff, #6d8cff);
+            background: linear-gradient(135deg, #a0b8ff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .logo span {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 400;
             color: var(--muted);
             letter-spacing: 2px;
+            text-transform: uppercase;
             -webkit-text-fill-color: var(--muted);
         }
 
         .lang-selector {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             background: rgba(255, 255, 255, 0.04);
             border-radius: 30px;
             padding: 3px;
             border: 1px solid var(--border);
         }
+
         .lang-selector button {
             background: transparent;
             border: none;
             color: var(--muted);
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.65rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.25s;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
+
         .lang-selector button.active {
             background: var(--accent);
             color: #fff;
             box-shadow: 0 0 20px var(--glow);
         }
-        .lang-selector button:hover:not(.active) {
-            color: #fff;
+
+        /* FORMULÁR */
+        .form-section {
+            margin-bottom: 6px;
+            transition: opacity 0.5s;
         }
 
-        /* ===== FORMULÁR ===== */
-        .form-section {
-            margin-bottom: 10px;
-            transition: opacity 0.5s, transform 0.5s;
-        }
         .form-section.hidden {
             display: none;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
+
         .form-group label {
             display: block;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--muted);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: 600;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            background: #0a0f1e;
+            padding: 13px 16px;
+            background: #080c1a;
             border: 1px solid var(--border);
             border-radius: 12px;
             color: var(--text);
             font-size: 1rem;
             transition: 0.3s;
             outline: none;
-            font-family: inherit;
         }
-        .form-group input:focus,
-        .form-group select:focus {
+
+        .form-group input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--glow);
         }
+
         .form-group input::placeholder {
             color: var(--muted);
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
-        /* elegantný date picker – natívny s vylepšením */
-        .form-group input[type="date"] {
+        .date-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.4fr;
+            gap: 10px;
+        }
+
+        .date-row select {
+            padding: 13px 10px;
+            background: #080c1a;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
             appearance: none;
             -webkit-appearance: none;
-            color-scheme: dark;
-            cursor: pointer;
-        }
-        .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.6);
             cursor: pointer;
         }
 
-        /* prepínanie pohlavia */
+        .date-row select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--glow);
+        }
+
+        /* PREPÍNANIE POHLAVIA */
         .gender-toggle {
             display: flex;
             gap: 10px;
-            background: #0a0f1e;
+            background: #080c1a;
             border-radius: 12px;
             padding: 4px;
             border: 1px solid var(--border);
         }
+
         .gender-toggle button {
             flex: 1;
             padding: 10px 0;
@@ -186,15 +202,14 @@
             cursor: pointer;
             transition: 0.25s;
         }
+
         .gender-toggle button.active {
             background: var(--accent);
             color: #fff;
             box-shadow: 0 0 20px var(--glow);
         }
-        .gender-toggle button:hover:not(.active) {
-            color: #fff;
-        }
 
+        /* TLAČIDLO */
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -211,48 +226,48 @@
             margin-top: 6px;
             box-shadow: 0 0 30px var(--glow);
         }
+
         .btn-primary:hover {
             transform: scale(1.01);
             box-shadow: 0 0 50px var(--glow);
         }
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
 
-        /* ===== VÝSLEDKY – POSTUPNÉ ODHAĽOVANIE ===== */
+        /* VÝSLEDKY */
         .results-container {
             display: none;
             margin-top: 10px;
         }
+
         .results-container.active {
             display: block;
-            animation: fadeSlide 0.7s ease;
+            animation: fadeIn 0.6s ease;
         }
 
-        @keyframes fadeSlide {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px 24px;
-            margin-bottom: 16px;
-            transition: opacity 0.5s, transform 0.5s;
+            border-radius: 14px;
+            padding: 24px 22px;
+            margin-bottom: 14px;
             opacity: 0;
             transform: translateY(20px);
-            animation: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
+
         .card.visible {
             opacity: 1;
             transform: translateY(0);
-            animation: cardIn 0.6s ease forwards;
-        }
-        @keyframes cardIn {
-            0% { opacity: 0; transform: translateY(30px) scale(0.97); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .card .phase {
@@ -261,53 +276,56 @@
             align-items: center;
             margin-bottom: 6px;
         }
+
         .card .phase h3 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--accent);
         }
+
         .card .phase .tag {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--muted);
             background: rgba(255, 255, 255, 0.04);
             padding: 2px 12px;
             border-radius: 30px;
             border: 1px solid var(--border);
         }
+
         .card p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.7;
             color: #d0d8e8;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
-        /* indikátor postupu */
+        /* PROGRESS */
         .progress-dots {
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin: 20px 0 16px;
+            margin: 16px 0 12px;
         }
+
         .progress-dots .dot {
-            width: 10px;
-            height: 10px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             background: var(--border);
             transition: 0.3s;
-            border: none;
-            padding: 0;
-            cursor: default;
         }
+
         .progress-dots .dot.active {
             background: var(--accent);
             box-shadow: 0 0 16px var(--glow);
             transform: scale(1.2);
         }
+
         .progress-dots .dot.done {
             background: var(--accent);
-            opacity: 0.4;
+            opacity: 0.3;
         }
 
         .btn-next {
@@ -318,14 +336,14 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             color: var(--text);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
             text-align: center;
             letter-spacing: 1px;
-            margin-top: 4px;
         }
+
         .btn-next:hover {
             background: rgba(255, 255, 255, 0.08);
             border-color: var(--accent);
@@ -334,86 +352,72 @@
         .btn-restart {
             display: block;
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: transparent;
             border: 1px solid var(--border);
             border-radius: 12px;
             color: var(--muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: 0.3s;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
         }
+
         .btn-restart:hover {
             border-color: var(--accent);
             color: #fff;
         }
 
-        /* ===== VIZUALIZÁCIA – ŽIVOTNÁ ŠPIRÁLA ===== */
-        .spiral-container {
-            margin: 10px 0 16px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            position: relative;
-        }
-        .spiral-container canvas {
-            display: block;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 16/5;
-            background: transparent;
-        }
-
-        /* ===== PÄTA ===== */
+        /* PÄTA */
         .footer {
-            margin-top: 30px;
-            padding-top: 16px;
+            margin-top: 28px;
+            padding-top: 14px;
             border-top: 1px solid var(--border);
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--muted);
             letter-spacing: 1.5px;
             text-transform: uppercase;
         }
+
         .footer strong {
             color: var(--accent);
             font-weight: 600;
         }
 
-        /* ===== RESPONZÍVNE ===== */
-        @media (max-width: 520px) {
+        @media (max-width: 480px) {
             .app {
-                padding: 20px 16px 16px;
+                padding: 18px 14px 16px;
             }
+
             .logo h1 {
                 font-size: 1.2rem;
             }
+
             .card {
-                padding: 20px 16px;
+                padding: 18px 14px;
             }
+
             .card p {
-                font-size: 0.95rem;
-            }
-            .form-group input,
-            .form-group select {
-                padding: 12px 14px;
-                font-size: 0.95rem;
-            }
-            .btn-primary {
-                padding: 14px;
                 font-size: 0.9rem;
             }
-        }
 
-        @media (max-width: 400px) {
+            .date-row {
+                grid-template-columns: 1fr 1fr 1.2fr;
+                gap: 6px;
+            }
+
+            .date-row select {
+                padding: 11px 6px;
+                font-size: 0.9rem;
+            }
+
             .header {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 6px;
             }
+
             .lang-selector {
                 align-self: flex-start;
             }
@@ -421,7 +425,6 @@
     </style>
 </head>
 <body>
-
 <div class="app" id="app">
     <!-- HLAVIČKA -->
     <div class="header">
@@ -445,7 +448,19 @@
         </div>
         <div class="form-group">
             <label id="lblBirth">Dátum narodenia</label>
-            <input type="date" id="birthDate">
+            <div class="date-row">
+                <select id="birthDay"><option value="">Deň</option></select>
+                <select id="birthMonth">
+                    <option value="">Mesiac</option>
+                    <option value="1">Január</option><option value="2">Február</option>
+                    <option value="3">Marec</option><option value="4">Apríl</option>
+                    <option value="5">Máj</option><option value="6">Jún</option>
+                    <option value="7">Júl</option><option value="8">August</option>
+                    <option value="9">September</option><option value="10">Október</option>
+                    <option value="11">November</option><option value="12">December</option>
+                </select>
+                <select id="birthYear"><option value="">Rok</option></select>
+            </div>
         </div>
         <div class="form-group">
             <label id="lblGender">Polarita</label>
@@ -459,16 +474,10 @@
 
     <!-- VÝSLEDKY -->
     <div class="results-container" id="resultsContainer">
-        <!-- karty budú vložené JS -->
         <div id="cardsWrapper"></div>
         <div class="progress-dots" id="progressDots"></div>
         <button class="btn-next" id="btnNext">Pokračovať →</button>
         <button class="btn-restart" id="btnRestart">↺ Začať odznova</button>
-    </div>
-
-    <!-- VIZUALIZÁCIA (skrytá, zobrazí sa pri prvej karte) -->
-    <div class="spiral-container" id="spiralContainer" style="display:none;">
-        <canvas id="spiralCanvas" width="800" height="250"></canvas>
     </div>
 
     <!-- PÄTA -->
@@ -588,10 +597,10 @@
         };
 
         let currentLang = 'sk';
-        let currentData = null; // seed, lifePath, destiny, gender, name
+        let currentGender = 'm';
 
         // ============================================================
-        // 2. DATABÁZA TEXTOV (10 fáz × 3 varianty)
+        // 2. DATABÁZA TEXTOV
         // ============================================================
         const TEXT_DB = {
             sk: {
@@ -850,14 +859,14 @@
         }
 
         // ============================================================
-        // 4. KÓD APLIKÁCIE
+        // 4. APLIKÁCIA
         // ============================================================
 
         const app = {
             init() {
                 this.cacheDom();
                 this.bindEvents();
-                this.setDefaultDate();
+                this.populateDates();
                 this.updateLanguage('sk');
             },
 
@@ -865,7 +874,9 @@
                 this.dom = {
                     langButtons: document.querySelectorAll('.lang-selector button'),
                     fullName: document.getElementById('fullName'),
-                    birthDate: document.getElementById('birthDate'),
+                    birthDay: document.getElementById('birthDay'),
+                    birthMonth: document.getElementById('birthMonth'),
+                    birthYear: document.getElementById('birthYear'),
                     genderButtons: document.querySelectorAll('.gender-toggle button'),
                     btnStart: document.getElementById('btnStart'),
                     formSection: document.getElementById('formSection'),
@@ -874,8 +885,6 @@
                     progressDots: document.getElementById('progressDots'),
                     btnNext: document.getElementById('btnNext'),
                     btnRestart: document.getElementById('btnRestart'),
-                    spiralContainer: document.getElementById('spiralContainer'),
-                    spiralCanvas: document.getElementById('spiralCanvas'),
                     subBrand: document.getElementById('subBrand'),
                 };
                 this.currentCard = -1;
@@ -890,47 +899,51 @@
             },
 
             bindEvents() {
-                // prepínanie jazykov
                 this.dom.langButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
-                        const lang = btn.dataset.lang;
-                        this.updateLanguage(lang);
+                        this.updateLanguage(btn.dataset.lang);
                     });
                 });
 
-                // prepínanie pohlavia
                 this.dom.genderButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
                         this.dom.genderButtons.forEach(b => b.classList.remove('active'));
                         btn.classList.add('active');
                         this.gender = btn.dataset.gender;
+                        document.body.className = this.gender === 'f' ? 'female' : '';
                     });
                 });
 
-                // tlačidlo Štart
                 this.dom.btnStart.addEventListener('click', () => this.startAnalysis());
 
-                // tlačidlo Ďalej
                 this.dom.btnNext.addEventListener('click', () => this.nextCard());
 
-                // tlačidlo Reštart
                 this.dom.btnRestart.addEventListener('click', () => this.restart());
 
-                // Enter na inputoch
                 this.dom.fullName.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') this.startAnalysis();
-                });
-                this.dom.birthDate.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') this.startAnalysis();
                 });
             },
 
-            setDefaultDate() {
-                const today = new Date();
-                const y = today.getFullYear();
-                const m = String(today.getMonth() + 1).padStart(2, '0');
-                const d = String(today.getDate()).padStart(2, '0');
-                this.dom.birthDate.value = `${y}-${m}-${d}`;
+            populateDates() {
+                // Dni
+                const daySel = this.dom.birthDay;
+                for (let i = 1; i <= 31; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = i;
+                    daySel.appendChild(opt);
+                }
+
+                // Roky
+                const yearSel = this.dom.birthYear;
+                const curYear = new Date().getFullYear();
+                for (let y = curYear; y >= 1920; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y;
+                    yearSel.appendChild(opt);
+                }
             },
 
             updateLanguage(lang) {
@@ -938,12 +951,10 @@
                 const t = LANG[lang];
                 if (!t) return;
 
-                // aktualizácia tlačidiel jazykov
                 this.dom.langButtons.forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.lang === lang);
                 });
 
-                // texty vo formulári
                 document.getElementById('lblName').textContent = t.name;
                 this.dom.fullName.placeholder = t.namePlaceholder;
                 document.getElementById('lblBirth').textContent = t.birth;
@@ -957,7 +968,6 @@
                 this.dom.btnRestart.textContent = t.restart;
                 this.dom.subBrand.textContent = t.brand;
 
-                // ak už sú výsledky zobrazené, prekreslíme ich
                 if (this.dom.resultsContainer.classList.contains('active')) {
                     this.renderCards();
                 }
@@ -965,61 +975,50 @@
 
             startAnalysis() {
                 const name = this.dom.fullName.value.trim();
-                const birth = this.dom.birthDate.value;
-                if (!name || !birth) {
+                const day = this.dom.birthDay.value;
+                const month = this.dom.birthMonth.value;
+                const year = this.dom.birthYear.value;
+
+                if (!name || !day || !month || !year) {
                     alert(LANG[this.lang].alert);
                     return;
                 }
 
                 this.name = name;
-                const parts = birth.split('-');
-                const year = parseInt(parts[0]);
-                const month = parseInt(parts[1]);
-                const day = parseInt(parts[2]);
 
                 // výpočet s korekciou 88 dní
-                const adjusted = getAdjustedBirthDate(year, month, day);
+                const adjusted = getAdjustedBirthDate(parseInt(year), parseInt(month), parseInt(day));
                 this.lifePath = numerologySum(adjusted);
                 this.destiny = nameToNumber(name);
                 const genderOffset = this.gender === 'f' ? 1 : 0;
-                this.seed = (this.lifePath * 7 + this.destiny * 13 + year + genderOffset) % 3;
+                this.seed = (this.lifePath * 7 + this.destiny * 13 + parseInt(year) + genderOffset) % 3;
 
-                // príprava dát pre karty
                 this.prepareCards();
 
-                // skryť formulár, zobraziť výsledky
                 this.dom.formSection.style.display = 'none';
                 this.dom.resultsContainer.classList.add('active');
-                this.dom.spiralContainer.style.display = 'block';
 
-                // vykresliť vizualizáciu
-                this.drawSpiral();
-
-                // zobraziť prvú kartu
                 this.currentCard = -1;
                 this.nextCard();
             },
 
             prepareCards() {
-                const lang = this.lang;
-                const db = TEXT_DB[lang] || TEXT_DB.sk;
+                const db = TEXT_DB[this.lang] || TEXT_DB.sk;
                 const s = this.seed;
-                const phases = LANG[lang].phases;
-                const tags = LANG[lang].tags;
+                const phases = LANG[this.lang].phases;
+                const tags = LANG[this.lang].tags;
                 const keys = ['childhood', 'teen', 'adult', 'today', 'shadow', 'future', 'motivation', 'override', 'radar', 'daily'];
 
                 this.cardsData = keys.map((key, idx) => {
                     const texts = db[key] || db.childhood;
                     const text = texts[s % texts.length];
-                    const isLast = (idx === 9);
-                    let phaseName = phases[idx] || key;
-                    let tagText = tags[idx] || '';
-                    return { phase: phaseName, tag: tagText, text, isLast };
+                    const phaseName = phases[idx] || key;
+                    const tagText = tags[idx] || '';
+                    return { phase: phaseName, tag: tagText, text };
                 });
             },
 
             renderCards() {
-                // vykreslíme všetky karty (ale zobrazíme len aktuálnu)
                 const wrapper = this.dom.cardsWrapper;
                 wrapper.innerHTML = '';
                 this.cardsData.forEach((card, idx) => {
@@ -1035,8 +1034,6 @@
                     `;
                     wrapper.appendChild(div);
                 });
-
-                // aktualizácia bodiek
                 this.updateDots();
             },
 
@@ -1050,7 +1047,6 @@
                     else if (i < this.currentCard) dot.classList.add('done');
                     container.appendChild(dot);
                 }
-                // text tlačidla
                 const t = LANG[this.lang];
                 if (this.currentCard === this.totalCards - 1) {
                     this.dom.btnNext.textContent = '✧ Dokončiť';
@@ -1061,39 +1057,29 @@
 
             nextCard() {
                 if (this.currentCard >= this.totalCards - 1) {
-                    // posledná karta – urobíme nič, alebo reštart?
                     return;
                 }
 
                 this.currentCard++;
                 const cards = this.dom.cardsWrapper.querySelectorAll('.card');
                 cards.forEach((card, idx) => {
-                    if (idx === this.currentCard) {
-                        card.classList.add('visible');
+                    if (idx <= this.currentCard) {
                         card.style.display = 'block';
-                    } else if (idx < this.currentCard) {
-                        card.classList.add('visible');
-                        card.style.display = 'block';
+                        setTimeout(() => card.classList.add('visible'), 50);
                     } else {
                         card.classList.remove('visible');
                         card.style.display = 'none';
                     }
                 });
 
-                // ak sme na poslednej karte, zmeníme tlačidlo
                 if (this.currentCard === this.totalCards - 1) {
                     this.dom.btnNext.textContent = '✧ Dokončiť';
-                    this.dom.btnNext.addEventListener('click', () => {
-                        // jemné blikanie alebo nič
-                    }, { once: true });
                 } else {
-                    const t = LANG[this.lang];
-                    this.dom.btnNext.textContent = t.next;
+                    this.dom.btnNext.textContent = LANG[this.lang].next;
                 }
 
                 this.updateDots();
 
-                // scroll na kartu (jemné)
                 const cardEl = cards[this.currentCard];
                 if (cardEl) {
                     cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1102,148 +1088,18 @@
 
             restart() {
                 this.dom.resultsContainer.classList.remove('active');
-                this.dom.spiralContainer.style.display = 'none';
                 this.dom.formSection.style.display = 'block';
                 this.currentCard = -1;
                 this.dom.cardsWrapper.innerHTML = '';
                 this.dom.progressDots.innerHTML = '';
                 this.dom.btnNext.textContent = LANG[this.lang].next;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-
-            // ============================================================
-            // 5. VIZUALIZÁCIA – ŽIVOTNÁ ŠPIRÁLA
-            // ============================================================
-            drawSpiral() {
-                const canvas = this.dom.spiralCanvas;
-                const rect = canvas.parentElement.getBoundingClientRect();
-                const w = Math.min(800, rect.width || 800);
-                const h = 250;
-                canvas.width = w * 2;
-                canvas.height = h * 2;
-                canvas.style.width = w + 'px';
-                canvas.style.height = h + 'px';
-                const ctx = canvas.getContext('2d');
-                ctx.scale(2, 2);
-
-                const seed = this.seed;
-                const colors = [
-                    '#f7b8a0', // detstvo
-                    '#f5a050', // dospievanie
-                    '#4caf50', // dospelosť
-                    '#5b9bd5', // dodnes
-                    '#d95a5a', // tieň
-                    '#f5c842', // budúcnosť
-                    '#a58bdb', // motivácia
-                    '#2bc0b0', // override
-                    '#f7d44a', // radar
-                    '#ffffff'  // pravda
-                ];
-
-                const cx = w * 0.5;
-                const cy = h * 0.6;
-                const maxR = Math.min(w, h) * 0.32;
-
-                ctx.clearRect(0, 0, w, h);
-
-                // pozadie – jemná žiara
-                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * 1.4);
-                grad.addColorStop(0, 'rgba(109,140,255,0.03)');
-                grad.addColorStop(1, 'transparent');
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, w, h);
-
-                // špirála – 10 bodov
-                const points = 10;
-                const angleStep = (Math.PI * 2) / points;
-                const startAngle = -Math.PI / 2 + seed * 0.3;
-
-                for (let i = 0; i < points; i++) {
-                    const angle = startAngle + i * angleStep;
-                    const r = maxR * (0.25 + 0.65 * (i / points));
-                    const x = cx + Math.cos(angle) * r;
-                    const y = cy + Math.sin(angle) * r;
-
-                    // veľkosť bodu podľa fázy
-                    const size = 6 + 5 * (i / points);
-                    const color = colors[i % colors.length];
-
-                    // tieň
-                    ctx.shadowColor = color + '40';
-                    ctx.shadowBlur = 20;
-
-                    ctx.beginPath();
-                    ctx.arc(x, y, size, 0, Math.PI * 2);
-                    ctx.fillStyle = color;
-                    ctx.fill();
-
-                    // názov fázy pod bodom
-                    ctx.shadowBlur = 0;
-                    ctx.font = '9px -apple-system, sans-serif';
-                    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'top';
-                    const label = LANG[this.lang].phases[i] || '';
-                    ctx.fillText(label, x, y + size + 4);
-                }
-
-                // spojovacia čiara medzi bodmi
-                ctx.beginPath();
-                for (let i = 0; i <= points; i++) {
-                    const idx = i % points;
-                    const angle = startAngle + idx * angleStep;
-                    const r = maxR * (0.25 + 0.65 * (idx / points));
-                    const x = cx + Math.cos(angle) * r;
-                    const y = cy + Math.sin(angle) * r;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-
-                // jemný kruh okolo
-                ctx.beginPath();
-                ctx.arc(cx, cy, maxR * 0.9, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // text "Tvoja špirála"
-                ctx.fillStyle = 'rgba(255,255,255,0.06)';
-                ctx.font = '10px -apple-system, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'bottom';
-                ctx.fillText('✦ tvoja životná špirála ✦', cx, cy - maxR * 0.65);
             }
         };
 
-        // inicializácia po načítaní DOM
         document.addEventListener('DOMContentLoaded', () => app.init());
-
-        // ============================================================
-        // 6. SPRACOVANIE ZMIEN OKNA (pre kreslenie špirály)
-        // ============================================================
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                if (app.dom.spiralContainer.style.display !== 'none') {
-                    app.drawSpiral();
-                }
-            }, 200);
-        });
-
-        // ============================================================
-        // 7. DODATOČNÉ DOLADENIE – PRVÉ SPUSTENIE
-        // ============================================================
-        // ak by niekto chcel vidieť špirálu hneď, ale nie – zobrazí sa až po analýze
-
-        // EXPORT pre prípadné debugovanie
         window.app = app;
-
     })();
 </script>
-
 </body>
 </html>
