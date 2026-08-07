@@ -40,7 +40,7 @@
         }
 
         .app {
-            max-width: 680px;
+            max-width: 720px;
             width: 100%;
             background: var(--card);
             border-radius: var(--radius);
@@ -238,35 +238,38 @@
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .result-card {
+        .result-block {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 22px 20px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             transition: border-color 0.3s;
         }
 
-        .result-card .phase {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4px;
-        }
-
-        .result-card .phase h3 {
+        .result-block .title {
             font-size: 0.8rem;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--accent);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .result-card .phase .tag {
+        .result-block .title .tag {
             font-size: 0.55rem;
             color: var(--muted);
             background: rgba(255, 255, 255, 0.04);
@@ -275,32 +278,14 @@
             border: 1px solid var(--border);
         }
 
-        .result-card p {
+        .result-block p {
             font-size: 0.95rem;
-            line-height: 1.7;
+            line-height: 1.8;
             color: #d0d8e8;
             margin-top: 4px;
         }
 
-        .meta-bar {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .meta-pill {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            padding: 4px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            color: var(--muted);
-        }
-
-        .meta-pill strong {
+        .result-block .highlight {
             color: var(--accent);
             font-weight: 600;
         }
@@ -350,11 +335,11 @@
                 font-size: 1.2rem;
             }
 
-            .result-card {
+            .result-block {
                 padding: 16px 14px;
             }
 
-            .result-card p {
+            .result-block p {
                 font-size: 0.9rem;
             }
 
@@ -380,623 +365,1019 @@
     </style>
 </head>
 <body>
-<div class="app" id="app">
-    <div class="header">
-        <div class="logo">
-            <h1 id="appTitle">Zrkadlo Bytia</h1>
-            <span id="subBrand">The Human Maintenance</span>
-        </div>
-        <div class="lang-selector" id="langSelector">
-            <button class="active" data-lang="sk">SK</button>
-            <button data-lang="en">EN</button>
-            <button data-lang="de">DE</button>
-            <button data-lang="cz">CZ</button>
-        </div>
-    </div>
-
-    <div class="form-section" id="formSection">
-        <div class="form-group">
-            <label id="lblName">Celé meno a priezvisko</label>
-            <input type="text" id="fullName" placeholder="napr. Július Kováč">
-        </div>
-        <div class="form-group">
-            <label id="lblBirth">Dátum narodenia</label>
-            <div class="date-row">
-                <select id="birthDay"><option value="">Deň</option></select>
-                <select id="birthMonth">
-                    <option value="">Mesiac</option>
-                    <option value="1">Január</option><option value="2">Február</option>
-                    <option value="3">Marec</option><option value="4">Apríl</option>
-                    <option value="5">Máj</option><option value="6">Jún</option>
-                    <option value="7">Júl</option><option value="8">August</option>
-                    <option value="9">September</option><option value="10">Október</option>
-                    <option value="11">November</option><option value="12">December</option>
-                </select>
-                <select id="birthYear"><option value="">Rok</option></select>
+    <div class="app" id="app">
+        <div class="header">
+            <div class="logo">
+                <h1 id="appTitle">Zrkadlo Bytia</h1>
+                <span id="subBrand">The Human Maintenance</span>
+            </div>
+            <div class="lang-selector" id="langSelector">
+                <button class="active" data-lang="sk">SK</button>
+                <button data-lang="en">EN</button>
+                <button data-lang="de">DE</button>
+                <button data-lang="cz">CZ</button>
             </div>
         </div>
-        <div class="form-group">
-            <label id="lblGender">Polarita</label>
-            <div class="gender-toggle" id="genderToggle">
-                <button class="active" data-gender="m">⚡ Muž</button>
-                <button data-gender="f">🌸 Žena</button>
+
+        <div class="form-section" id="formSection">
+            <div class="form-group">
+                <label id="lblName">Celé meno a priezvisko</label>
+                <input type="text" id="fullName" placeholder="napr. Július Kováč">
             </div>
+            <div class="form-group">
+                <label id="lblBirth">Dátum narodenia</label>
+                <div class="date-row">
+                    <select id="birthDay"><option value="">Deň</option></select>
+                    <select id="birthMonth">
+                        <option value="">Mesiac</option>
+                        <option value="1">Január</option><option value="2">Február</option>
+                        <option value="3">Marec</option><option value="4">Apríl</option>
+                        <option value="5">Máj</option><option value="6">Jún</option>
+                        <option value="7">Júl</option><option value="8">August</option>
+                        <option value="9">September</option><option value="10">Október</option>
+                        <option value="11">November</option><option value="12">December</option>
+                    </select>
+                    <select id="birthYear"><option value="">Rok</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblGender">Polarita</label>
+                <div class="gender-toggle" id="genderToggle">
+                    <button class="active" data-gender="m">⚡ Muž</button>
+                    <button data-gender="f">🌸 Žena</button>
+                </div>
+            </div>
+            <button class="btn-primary" id="btnStart">✦ Otvoriť analýzu</button>
         </div>
-        <button class="btn-primary" id="btnStart">✦ Otvoriť analýzu</button>
+
+        <div class="results-container" id="resultsContainer">
+            <div id="outputWrapper"></div>
+            <button class="btn-restart" id="btnRestart">↺ Začať odznova</button>
+        </div>
+
+        <div class="footer">
+            <strong>Grizzly Courage</strong> · The Human Maintenance
+        </div>
     </div>
 
-    <div class="results-container" id="resultsContainer">
-        <div class="meta-bar" id="metaTags"></div>
-        <div id="cardsWrapper"></div>
-        <button class="btn-restart" id="btnRestart">↺ Začať odznova</button>
-    </div>
+    <script>
+        (function() {
+            'use strict';
 
-    <div class="footer">
-        <strong>Grizzly Courage</strong> · The Human Maintenance
-    </div>
-</div>
-
-<script>
-    (function() {
-        'use strict';
-
-        const LANG = {
-            sk: {
-                title: 'Zrkadlo Bytia',
-                brand: 'The Human Maintenance',
-                name: 'Celé meno a priezvisko',
-                namePlaceholder: 'napr. Július Kováč',
-                birth: 'Dátum narodenia',
-                gender: 'Polarita',
-                male: '⚡ Muž',
-                female: '🌸 Žena',
-                start: '✦ Otvoriť analýzu',
-                restart: '↺ Začať odznova',
-                alert: 'Prosím, vyplňte meno a dátum narodenia.',
-                subject: 'Subjekt',
-                lifeCode: 'Životný kód',
-                destiny: 'Rezonancia osudu',
-                polarity: 'Polarita',
-                maleLabel: 'Muž',
-                femaleLabel: 'Žena',
-                phases: [
-                    'Detstvo', 'Dospievanie', 'Dospelý vek', 'Dodnes',
-                    'Tieň', 'Budúcnosť', 'Motivácia', 'Etický Override',
-                    'Energetický radar', 'Mechanizmus pravdy'
-                ],
-                tags: [
-                    'korene programu', 'obranné štíty', 'stabilizácia pozície',
-                    'súčasný bod vedomia', 'nekompromisné zrkadlo',
-                    'trajektória vývoja', 'skutočný motor',
-                    'odpojenie od dogiem', 'priorita pre dnešok',
-                    'odhalenie ilúzie a nádej'
-                ]
-            },
-            en: {
-                title: 'Mirror of Being',
-                brand: 'The Human Maintenance',
-                name: 'Full Name',
-                namePlaceholder: 'e.g. John Doe',
-                birth: 'Date of Birth',
-                gender: 'Polarity',
-                male: '⚡ Male',
-                female: '🌸 Female',
-                start: '✦ Open Analysis',
-                restart: '↺ Start Over',
-                alert: 'Please fill in your name and date of birth.',
-                subject: 'Subject',
-                lifeCode: 'Life Code',
-                destiny: 'Destiny Resonance',
-                polarity: 'Polarity',
-                maleLabel: 'Male',
-                femaleLabel: 'Female',
-                phases: [
-                    'Childhood', 'Adolescence', 'Adulthood', 'Present',
-                    'Shadow', 'Future', 'Motivation', 'Ethical Override',
-                    'Energy Radar', 'Mechanism of Truth'
-                ],
-                tags: [
-                    'roots of program', 'defensive shields', 'position stabilization',
-                    'current point of consciousness', 'uncompromising mirror',
-                    'development trajectory', 'true engine',
-                    'disconnection from dogmas', 'today\'s priority',
-                    'revelation of illusion and hope'
-                ]
-            },
-            de: {
-                title: 'Spiegel des Seins',
-                brand: 'The Human Maintenance',
-                name: 'Vollständiger Name',
-                namePlaceholder: 'z.B. Julius Kováč',
-                birth: 'Geburtsdatum',
-                gender: 'Polarität',
-                male: '⚡ Männlich',
-                female: '🌸 Weiblich',
-                start: '✦ Analyse öffnen',
-                restart: '↺ Neu beginnen',
-                alert: 'Bitte geben Sie Namen und Geburtsdatum ein.',
-                subject: 'Subjekt',
-                lifeCode: 'Lebenscode',
-                destiny: 'Schicksalsresonanz',
-                polarity: 'Polarität',
-                maleLabel: 'Männlich',
-                femaleLabel: 'Weiblich',
-                phases: [
-                    'Kindheit', 'Jugend', 'Erwachsenenalter', 'Heute',
-                    'Schatten', 'Zukunft', 'Motivation', 'Ethischer Override',
-                    'Energie-Radar', 'Mechanismus der Wahrheit'
-                ],
-                tags: [
-                    'Programmwurzeln', 'Abwehrschilde', 'Positionsstabilisierung',
-                    'aktueller Bewusstseinspunkt', 'kompromissloser Spiegel',
-                    'Entwicklungsbahn', 'echter Motor',
-                    'Entkopplung von Dogmen', 'Priorität für heute',
-                    'Enthüllung von Illusion und Hoffnung'
-                ]
-            },
-            cz: {
-                title: 'Zrcadlo Bytí',
-                brand: 'The Human Maintenance',
-                name: 'Celé jméno a příjmení',
-                namePlaceholder: 'např. Julius Kováč',
-                birth: 'Datum narození',
-                gender: 'Polarita',
-                male: '⚡ Muž',
-                female: '🌸 Žena',
-                start: '✦ Otevřít analýzu',
-                restart: '↺ Začít znovu',
-                alert: 'Prosím, vyplňte jméno a datum narození.',
-                subject: 'Subjekt',
-                lifeCode: 'Životní kód',
-                destiny: 'Rezonance osudu',
-                polarity: 'Polarita',
-                maleLabel: 'Muž',
-                femaleLabel: 'Žena',
-                phases: [
-                    'Dětství', 'Dospívání', 'Dospělost', 'Dodnes',
-                    'Stín', 'Budoucnost', 'Motivace', 'Etický Override',
-                    'Energetický radar', 'Mechanismus pravdy'
-                ],
-                tags: [
-                    'kořeny programu', 'obranné štíty', 'stabilizace pozice',
-                    'současný bod vědomí', 'nekompromisní zrcadlo',
-                    'trajektorie vývoje', 'skutečný motor',
-                    'odpojení od dogmat', 'priorita pro dnešek',
-                    'odhalení iluze a naděje'
-                ]
-            }
-        };
-
-        let currentLang = 'sk';
-        let currentGender = 'm';
-
-        function getAdjustedBirthDate(year, month, day) {
-            const d = new Date(year, month - 1, day);
-            d.setDate(d.getDate() - 88);
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            return `${y}${m}${dd}`;
-        }
-
-        function numerologySum(str) {
-            let sum = 0;
-            for (let ch of str) {
-                let d = parseInt(ch);
-                if (!isNaN(d)) sum += d;
-            }
-            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-                sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-            }
-            return sum;
-        }
-
-        function nameToNumber(name) {
-            const map = {
-                'a': 1, 'á': 1, 'ä': 1, 'b': 2, 'c': 3, 'č': 3, 'd': 4, 'ď': 4,
-                'e': 5, 'é': 5, 'ě': 5, 'f': 6, 'g': 7, 'h': 8, 'ch': 8, 'i': 9,
-                'í': 9, 'j': 1, 'k': 2, 'l': 3, 'm': 4, 'n': 5, 'ň': 5, 'o': 6,
-                'ó': 6, 'ô': 6, 'p': 7, 'q': 8, 'r': 9, 'ř': 9, 's': 1, 'š': 1,
-                't': 2, 'ť': 2, 'u': 3, 'ú': 3, 'ů': 3, 'v': 4, 'w': 5, 'x': 6,
-                'y': 7, 'ý': 7, 'z': 8, 'ž': 8
+            // ================================================================
+            // 1. JAZYKOVÉ PREKLADY
+            // ================================================================
+            const LANG = {
+                sk: {
+                    title: 'Zrkadlo Bytia',
+                    brand: 'The Human Maintenance',
+                    name: 'Celé meno a priezvisko',
+                    namePlaceholder: 'napr. Július Kováč',
+                    birth: 'Dátum narodenia',
+                    gender: 'Polarita',
+                    male: '⚡ Muž',
+                    female: '🌸 Žena',
+                    start: '✦ Otvoriť analýzu',
+                    restart: '↺ Začať odznova',
+                    alert: 'Prosím, vyplňte meno a dátum narodenia.',
+                    parts: {
+                        intro: '✦ Úvod',
+                        childhood: '🌱 Detstvo',
+                        teen: '🛡️ Dospievanie',
+                        adult: '🌳 Dospelosť',
+                        present: '🔮 Prítomnosť',
+                        future: '🌅 Budúcnosť',
+                        truth: '🪞 Pravda o tebe',
+                        conclusion: '✨ Záver'
+                    },
+                    tags: {
+                        intro: 'tvoj kód',
+                        childhood: 'korene',
+                        teen: 'štíty',
+                        adult: 'sila',
+                        present: 'teraz',
+                        future: 'čo príde',
+                        truth: 'mechanizmus',
+                        conclusion: 'sloboda'
+                    }
+                },
+                en: {
+                    title: 'Mirror of Being',
+                    brand: 'The Human Maintenance',
+                    name: 'Full Name',
+                    namePlaceholder: 'e.g. John Doe',
+                    birth: 'Date of Birth',
+                    gender: 'Polarity',
+                    male: '⚡ Male',
+                    female: '🌸 Female',
+                    start: '✦ Open Analysis',
+                    restart: '↺ Start Over',
+                    alert: 'Please fill in your name and date of birth.',
+                    parts: {
+                        intro: '✦ Introduction',
+                        childhood: '🌱 Childhood',
+                        teen: '🛡️ Adolescence',
+                        adult: '🌳 Adulthood',
+                        present: '🔮 Present',
+                        future: '🌅 Future',
+                        truth: '🪞 The Truth About You',
+                        conclusion: '✨ Conclusion'
+                    },
+                    tags: {
+                        intro: 'your code',
+                        childhood: 'roots',
+                        teen: 'shields',
+                        adult: 'strength',
+                        present: 'now',
+                        future: 'what comes',
+                        truth: 'mechanism',
+                        conclusion: 'freedom'
+                    }
+                },
+                de: {
+                    title: 'Spiegel des Seins',
+                    brand: 'The Human Maintenance',
+                    name: 'Vollständiger Name',
+                    namePlaceholder: 'z.B. Julius Kováč',
+                    birth: 'Geburtsdatum',
+                    gender: 'Polarität',
+                    male: '⚡ Männlich',
+                    female: '🌸 Weiblich',
+                    start: '✦ Analyse öffnen',
+                    restart: '↺ Neu beginnen',
+                    alert: 'Bitte geben Sie Namen und Geburtsdatum ein.',
+                    parts: {
+                        intro: '✦ Einleitung',
+                        childhood: '🌱 Kindheit',
+                        teen: '🛡️ Jugend',
+                        adult: '🌳 Erwachsenenalter',
+                        present: '🔮 Gegenwart',
+                        future: '🌅 Zukunft',
+                        truth: '🪞 Die Wahrheit über dich',
+                        conclusion: '✨ Schluss'
+                    },
+                    tags: {
+                        intro: 'dein Code',
+                        childhood: 'Wurzeln',
+                        teen: 'Schilde',
+                        adult: 'Stärke',
+                        present: 'jetzt',
+                        future: 'was kommt',
+                        truth: 'Mechanismus',
+                        conclusion: 'Freiheit'
+                    }
+                },
+                cz: {
+                    title: 'Zrcadlo Bytí',
+                    brand: 'The Human Maintenance',
+                    name: 'Celé jméno a příjmení',
+                    namePlaceholder: 'např. Julius Kováč',
+                    birth: 'Datum narození',
+                    gender: 'Polarita',
+                    male: '⚡ Muž',
+                    female: '🌸 Žena',
+                    start: '✦ Otevřít analýzu',
+                    restart: '↺ Začít znovu',
+                    alert: 'Prosím, vyplňte jméno a datum narození.',
+                    parts: {
+                        intro: '✦ Úvod',
+                        childhood: '🌱 Dětství',
+                        teen: '🛡️ Dospívání',
+                        adult: '🌳 Dospělost',
+                        present: '🔮 Přítomnost',
+                        future: '🌅 Budoucnost',
+                        truth: '🪞 Pravda o tobě',
+                        conclusion: '✨ Závěr'
+                    },
+                    tags: {
+                        intro: 'tvůj kód',
+                        childhood: 'kořeny',
+                        teen: 'štíty',
+                        adult: 'síla',
+                        present: 'teď',
+                        future: 'co přijde',
+                        truth: 'mechanismus',
+                        conclusion: 'svoboda'
+                    }
+                }
             };
-            let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g, '');
-            let sum = 0;
-            for (let ch of clean) {
-                if (map[ch]) sum += map[ch];
-            }
-            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-                sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-            }
-            return sum;
-        }
 
-        const TEXT_DB = {
-            sk: {
-                childhood: [
-                    "Už v detstve ste veľmi skoro pochopili, že svet nie je priestor bezpodmienečnej istoty, ale miesto, kde sa musíte naučiť stáť na vlastných nohách. Boli ste citlivý pozorovateľ atmosféry okolo seba – vnímali ste každé napätie skôr, než sa prejavilo navonok. Táto skúsenosť vo vás prebudila hlbokú samostatnosť a tichú obranu.",
-                    "V detských rokoch niesli ste vnútornú nutnosť dokazovať svoju hodnotu. Vaše vnútro vyžadovalo porozumenie, ktoré často nenašlo odozvu, a tak ste si vybudovali pevný vnútorný svet. Už vtedy sa rodila vaša potreba kontrolovať situácie, aby ste predišli pocitu bezmocnosti.",
-                    "Detstvo pre vás znamenalo tichý boj medzi túžbou po prijatí a potrebou slobody. Skoro ste pochopili, že spoliehať sa na druhých prináša riziko sklamania. Tento základ zformoval vašu schopnosť niesť zodpovednosť ďaleko za hranice vášho veku."
-                ],
-                teen: [
-                    "Dospievanie bolo obdobím vnútorného vzdoru, kedy ste odmietali akceptovať povrchné pravidlá a autority bez hlbšieho zmyslu. Vaša myseľ napredovala rýchlejšie ako prostredie, v ktorom ste žili, čo vás často izolovalo. Vytvorili ste si štít nezávislosti, aby ste skryli svoju zraniteľnosť pred svetom.",
-                    "V puberte sa naplno prejavila vaša potreba pevnej identity. Každý pokus okolia tlačiť vás do šablón narážal na odpor. Namiesto prispôsobenia sa väčšine ste radšej zvolili náročnejšiu cestu overovania si vlastných právd na základe vlastných chýb.",
-                    "Dospievanie sa nieslo v znamení maskovania neistoty intelektom a chladným nadhľadom. Presne ste vedeli, kedy poukázať na nezmyselnosť cudzích názorov, čím ste si chránili svoje citlivé vnútro pred zranením."
-                ],
-                adult: [
-                    "V dospelom veku ste prevzali plnú réžiu nad svojím životom, no za cenu obrovského vnútro-energetického nasadenia. Vybudovali ste si pozíciu, kde sa od vás očakáva sila a riešenie problémov druhých. Hlboko vnútri však občas cítite únavu z toho, že málokto vidí, koľko síl vás stojí udržiavať tento systém pokope.",
-                    "Dospelosť pre vás znamenala prechod od vonkajších bojov k budovaniu skutočných hodnôt. Narážali ste na alibizmus a slabosť v okolí, čo vo vás vyvolávalo sklamanie, no zároveň vás to vyformovalo do podoby človeka, na ktorého sa dá spoľahnúť, aj keď ide do tuhého.",
-                    "V dospelom veku ste prekukli ilúzie spoločenských očakávaní. Vaša pozornosť sa presunula k efektivite, pokoju a ochrane vlastného priestoru. Odstrihli ste všetko, čo nemalo hlbší význam, a zamerali ste sa na to, čo skutočne prináša výsledky."
-                ],
-                today: [
-                    "Dnes stojíte v bode zásadného vnútorného zúčtovania. Odmietate ďalej udržiavať nefunkčné väzby a toxické kompromisy len preto, aby ste 'vyhoveli'. Vaša duša si pýta pravdu, pokoj a priestor dýchať bez neustáleho tlaku obhajovať sa pred ostatnými.",
-                    "V súčasnosti presne vidíte cez pretvárku ľudí aj vlastné staré obranné programy. Máte obrovskú jasnosť, no zároveň vnímanú únavu z bojov minulosti. Prechádzate fázou, kde ticho a vnútorná stabilita majú väčšiu cenu ako snaha niekomu niečo dokazovať.",
-                    "Dnes je vašou hlavnou úlohou nájsť rovnováhu medzi svojou silnou racionalitou a hlbokým vnútorným pokojom. Viete, kto ste, poznáte svoje slabé miesta a už sa nebojíte byť autentickí, aj keď to znamená stáť v niektorých veciach úplne sami."
-                ],
-                shadow: [
-                    "Vaša temná stránka sa prejavuje v chvíľach, keď pod tlakom prepínate do arogancie intelektu a mrazivého odstupu. Máte tendenciu ľudí okolo seba súdiť z pozície 'kto to má viac premyslené' a vašou zbraňou býva ostrá, presne mierená pravda, ktorú hovoríte nie z lásky, ale preto, aby vaše ego pocítilo víťazstvo. Racionalizujete si vlastnú netrpezlivosť a tvrdosť tým, že 'vy ste aspoň úprimní'.",
-                    "Váš tieň spočíva v hlboko zakorenenom presvedčení, že ak veci nevezmete pevne do rúk vy, tak zlyhajú. V stave ohrozenia sa meníte na nekompromisného kontrolóra, ktorý odsudzuje slabosť iných a každé vybočenie z pravidiel trestá tichým ignorovaním alebo cynizmom. Používate svoju inteligenciu ako pancier, ktorý vás chráni pred priznaním, že aj vy potrebujete podporu.",
-                    "Temná stránka vás občas uväzní v tichej pýche a pocite, že ste na svete osamelý pozorovateľ, ktorému nikto nestíha. Namiesto spojenia s okolím volíte izolaciu a pohŕdanie systémom, čím si sami vytvárate bariéry, na ktoré sa potom sťažujete."
-                ],
-                future: [
-                    "Budúcnosť prinesie hlboké uspokojenie a zber plodov vašej vnútornej práce, ak sa vzdáte potreby mať vo všetkom posledné slovo. Smerujete k tichej, prirodzenej moci, kde nebudete musieť bojovať o uznanie – vaše výsledky a pokoj budú hovoriť za vás.",
-                    "Ďalšia fáza života vás vyzýva k prechodu od boja proti chybám sveta k budovaniu vlastného bezpečného prístavu. Získate hlbokú nezávislosť a rovnováhu, akonáhle prestanete plytvať energiou na nápravu ľudí, ktorí o to nestoja.",
-                    "Vývoj speje k vnútornému prelomu a oslobodeniu od minulých bremien. Pred vami je obdobie, kedy sa vaše skúsenosti spoja s čistým zámerom tvoriť hodnoty, ktoré prežijú."
-                ],
-                motivation: [
-                    "Vašou skutočnou hybnou silou je nezastaviteľná túžba po **pravde, slobode a vnútornej suverenite**. Neznášate manipuláciu, faloš a vnucovanie cudzích dogiem. Hná vás vnútorne presvedčenie, že musíte veci pochopiť do hĺbky a žiť život podľa vlastných pravidiel.",
-                    "Hná vás potreba mať pevný bod v nestáhlom svete a ochrániť si svoju integritu. Vašou hnacou silou je neustále vzdelávanie, hľadanie podstaty a snaha nenechať sa zotročiť systémom ani vlastným strachom.",
-                    "Motivuje vás hlboký hlad po zmysluplnosti. Neuspokojíte sa s polovičatými odpoveďami. Chcete vidieť veci jasne, čisto a bez príkras, čo vás poháňa vpred aj v momente, keď sú podmienky nepriaznivé."
-                ],
-                override: [
-                    "Etický Override: Tento systém ruší všetky staré programy strachu, viny a závislosti od cudzích mienok. Odpájate sa od kolektívnych dogiem, masovej hystérie a potreby zapadať tam, kde strácate seba. Vaša voľba odteraz: Žiadne ďalšie kulty ani autority. Kráčate v mene vlastnej čistoty a pokoja, pričom konáte dobro tam, kde to má reálny zmysel.",
-                    "Etický Override: Definitívne pretrhnutie reťazí. Uvedomte si, že skutočná sloboda neprichádza zvonka, ale z vnútornej rozhodnosti nekomplikovať si život cudzími drámami. Tento bod vás vracia k vašej esenciálnej sile – pomáhate tam, kde je to čisté, ale beriete si späť plnú zodpovednosť za vlastnú energiu.",
-                    "Etický Override: Mentálny reštart a návrat k suverenite. Zbavujete sa potreby bojovať proti lžiam tohto sveta. Vašou najsilnejšou zbraňou už nie je odpor, ale absolútny vnútorný pokoj a život v pravde bez potreby presviedčať o nej iných."
-                ],
-                radar: [
-                    "Dnešná absolútna priorita: Neplýtvať ani uncesou energie na konfrontácie s hlúposťou alebo cudzími emóciami. Ak sa objaví tlak, urobte krok vzad do ticha. Smerujte svoju silu výhradne do pokoja a dokončenia vlastných zámerov.",
-                    "Dnes sa vyhnite pasci dokazovania svojej pravdy za každú cenu. Vesmír vám testuje mieru trpezlivosti. Zostaňte v chladnom, láskavom nadhľade a nenechte sa vtiahnuť do cudzích drám.",
-                    "Dnes platí pravidlo: Menej rečí, viac čistého konania. Svoj ostrý intelekt dnes použite na upratanie vlastného priestoru, nie na hodnotenie okolia. Strážte si svoje hranice s úsmevom."
-                ],
-                daily: [
-                    "Denný kód rezonancie ti pripomína, že tvoja stabilita je v tvojich rukách. Nenechaj sa vykoľajiť vonkajšími otrasmi – sú to len vlny na hladine.",
-                    "Dnes sa sústreď na jednoduché veci: dych, ticho, jeden čistý krok. Tvoja energia sa sama usporiada, ak jej prestaneš prekážať.",
-                    "Prijmi dnešok taký, aký je. Žiadny boj, žiadne presviedčanie. Tvoja prítomnosť hovorí viac než tisíce slov."
-                ]
-            },
-            en: {
-                childhood: [
-                    "In childhood, you very early understood that the world is not a place of unconditional certainty, but a place where you must learn to stand on your own two feet. You were a sensitive observer of the atmosphere around you – you perceived every tension before it manifested outwardly. This experience awakened in you a deep self-reliance and quiet defense.",
-                    "In your childhood years, you carried an inner necessity to prove your worth. Your inner self demanded understanding that often found no resonance, so you built a solid inner world. Even then, your need to control situations to avoid helplessness was born.",
-                    "Childhood for you meant a quiet struggle between the desire for acceptance and the need for freedom. You understood early that relying on others brings the risk of disappointment. This foundation shaped your ability to take responsibility far beyond your age."
-                ],
-                teen: [
-                    "Adolescence was a period of inner rebellion, when you refused to accept superficial rules and authorities without deeper meaning. Your mind advanced faster than the environment you lived in, which often isolated you. You created a shield of independence to hide your vulnerability from the world.",
-                    "In puberty, your need for a firm identity fully manifested. Every attempt by your surroundings to push you into templates met resistance. Instead of conforming to the majority, you chose the more difficult path of verifying your own truths through your own mistakes.",
-                    "Adolescence was marked by masking insecurity with intellect and cold detachment. You knew exactly when to point out the pointlessness of others' opinions, thereby protecting your sensitive inner self from injury."
-                ],
-                adult: [
-                    "In adulthood, you took full control of your life, but at the cost of enormous inner energy expenditure. You built a position where strength and solving others' problems are expected of you. Deep inside, however, you sometimes feel fatigue because few see how much effort it costs you to keep this system together.",
-                    "Adulthood for you meant a transition from external battles to building true values. You encountered alibism and weakness around you, which caused disappointment, yet at the same time shaped you into a person who can be relied upon, even when things get tough.",
-                    "In adulthood, you saw through the illusions of societal expectations. Your attention shifted to efficiency, peace, and protecting your own space. You cut off everything that lacked deeper meaning and focused on what truly brings results."
-                ],
-                today: [
-                    "Today you stand at a point of fundamental inner reckoning. You refuse to further maintain dysfunctional bonds and toxic compromises just to 'fit in'. Your soul demands truth, peace, and space to breathe without the constant pressure to defend yourself to others.",
-                    "Currently, you see clearly through people's pretense and your own old defense programs. You have immense clarity, but also perceived fatigue from past battles. You are going through a phase where silence and inner stability are more valuable than trying to prove something to someone.",
-                    "Today your main task is to find balance between your strong rationality and deep inner peace. You know who you are, you know your weak points, and you are no longer afraid to be authentic, even if it means standing completely alone in some things."
-                ],
-                shadow: [
-                    "Your dark side manifests in moments when, under pressure, you switch into intellectual arrogance and freezing distance. You tend to judge people around you from the position of 'who has it more thought out' and your weapon is often sharp, precisely aimed truth, spoken not out of love but to let your ego feel victory. You rationalize your impatience and harshness by saying 'at least you are honest'.",
-                    "Your shadow lies in the deeply rooted belief that if you don't take things firmly into your own hands, they will fail. In a state of threat, you turn into an uncompromising controller who condemns others' weakness and punishes every deviation from the rules with silent ignoring or cynicism. You use your intelligence as armor to protect you from admitting that you also need support.",
-                    "The dark side sometimes traps you in quiet pride and the feeling that you are a lonely observer in the world that no one can keep up with. Instead of connecting with your surroundings, you choose isolation and contempt for the system, thereby creating barriers that you later complain about."
-                ],
-                future: [
-                    "The future will bring deep satisfaction and the harvest of your inner work if you give up the need to have the last word in everything. You are heading toward quiet, natural power where you won't have to fight for recognition – your results and peace will speak for you.",
-                    "The next phase of life calls you to transition from fighting the world's mistakes to building your own safe haven. You will gain deep independence and balance once you stop wasting energy on correcting people who don't want it.",
-                    "Development is heading toward inner breakthrough and liberation from past burdens. Ahead of you is a period when your experiences will combine with pure intention to create values that will endure."
-                ],
-                motivation: [
-                    "Your true driving force is an unstoppable desire for **truth, freedom, and inner sovereignty**. You cannot stand manipulation, falsehood, and the imposition of foreign dogmas. You are driven by the inner conviction that you must understand things deeply and live life by your own rules.",
-                    "You are driven by the need to have a firm point in an unstable world and to protect your integrity. Your driving force is continuous learning, seeking essence, and the effort not to be enslaved by the system or your own fear.",
-                    "You are motivated by a deep hunger for meaning. You are not satisfied with half-answers. You want to see things clearly, purely, and without embellishment, which pushes you forward even when conditions are unfavorable."
-                ],
-                override: [
-                    "Ethical Override: This system cancels all old programs of fear, guilt, and dependence on others' opinions. You disconnect from collective dogmas, mass hysteria, and the need to fit in where you lose yourself. Your choice from now on: No more cults or authorities. You walk in the name of your own purity and peace, while doing good where it truly matters.",
-                    "Ethical Override: Definitive breaking of chains. Realize that true freedom does not come from outside, but from the inner determination not to complicate your life with others' dramas. This point returns you to your essential strength – you help where it is pure, but take back full responsibility for your own energy.",
-                    "Ethical Override: Mental restart and return to sovereignty. You free yourself from the need to fight against the lies of this world. Your strongest weapon is no longer resistance, but absolute inner peace and living in truth without needing to convince others of it."
-                ],
-                radar: [
-                    "Today's absolute priority: Not to waste an ounce of energy on confrontations with stupidity or others' emotions. If pressure arises, take a step back into silence. Direct your strength exclusively to peace and completing your own intentions.",
-                    "Today, avoid the trap of proving your truth at all costs. The universe is testing your patience. Stay in a cool, loving detachment and don't get drawn into others' dramas.",
-                    "Today's rule: Less talk, more pure action. Use your sharp intellect today to clean your own space, not to judge your surroundings. Guard your boundaries with a smile."
-                ],
-                daily: [
-                    "The daily resonance code reminds you that your stability is in your hands. Don't let external shocks derail you – they are just ripples.",
-                    "Today focus on simple things: breath, silence, one clear step. Your energy will organize itself if you stop obstructing it.",
-                    "Accept today as it is. No fight, no persuasion. Your presence speaks louder than words."
-                ]
-            },
-            de: {
-                childhood: [
-                    "In der Kindheit haben Sie sehr früh verstanden, dass die Welt kein Ort bedingungsloser Sicherheit ist, sondern ein Ort, an dem Sie lernen müssen, auf eigenen Beinen zu stehen. Sie waren ein sensibler Beobachter der Atmosphäre um Sie herum – Sie nahmen jede Spannung wahr, bevor sie sich nach außen manifestierte. Diese Erfahrung weckte in Ihnen eine tiefe Selbstständigkeit und eine stille Verteidigung.",
-                    "In Ihren Kindheitsjahren trugen Sie eine innere Notwendigkeit, Ihren Wert zu beweisen. Ihr Inneres verlangte nach Verständnis, das oft keine Resonanz fand, und so bauten Sie sich eine feste innere Welt auf. Schon damals entstand Ihr Bedürfnis, Situationen zu kontrollieren, um Gefühle der Hilflosigkeit zu vermeiden.",
-                    "Kindheit bedeutete für Sie einen stillen Kampf zwischen dem Wunsch nach Akzeptanz und dem Bedürfnis nach Freiheit. Sie verstanden früh, dass Vertrauen auf andere das Risiko von Enttäuschungen birgt. Diese Grundlage formte Ihre Fähigkeit, Verantwortung weit über Ihr Alter hinaus zu tragen."
-                ],
-                teen: [
-                    "Die Jugend war eine Zeit des inneren Widerstands, in der Sie sich weigerten, oberflächliche Regeln und Autoritäten ohne tieferen Sinn zu akzeptieren. Ihr Geist entwickelte sich schneller als Ihre Umgebung, was Sie oft isolierte. Sie schufen sich einen Schild der Unabhängigkeit, um Ihre Verletzlichkeit vor der Welt zu verbergen.",
-                    "In der Pubertät zeigte sich Ihr Bedürfnis nach einer festen Identität vollständig. Jeder Versuch Ihrer Umgebung, Sie in Schablonen zu pressen, stieß auf Widerstand. Statt sich der Mehrheit anzupassen, wählten Sie den schwierigeren Weg, eigene Wahrheiten durch eigene Fehler zu überprüfen.",
-                    "Die Jugend war geprägt von der Maskierung von Unsicherheit durch Intellekt und kalte Distanz. Sie wussten genau, wann Sie auf die Sinnlosigkeit fremder Meinungen hinweisen mussten, um Ihr empfindsames Inneres vor Verletzungen zu schützen."
-                ],
-                adult: [
-                    "Im Erwachsenenalter übernahmen Sie die volle Kontrolle über Ihr Leben, aber um den Preis eines enormen inneren Energieaufwands. Sie bauten sich eine Position auf, in der Stärke und das Lösen der Probleme anderer von Ihnen erwartet werden. Tief im Inneren spüren Sie jedoch manchmal Erschöpfung, weil nur wenige sehen, wie viel Kraft es Sie kostet, dieses System zusammenzuhalten.",
-                    "Das Erwachsenenalter bedeutete für Sie einen Übergang von äußeren Kämpfen zum Aufbau echter Werte. Sie stießen auf Alibismus und Schwäche in Ihrer Umgebung, was Enttäuschung in Ihnen auslöste, aber gleichzeitig formte es Sie zu einem Menschen, auf den man sich verlassen kann, auch wenn es hart wird.",
-                    "Im Erwachsenenalter durchschauten Sie die Illusionen gesellschaftlicher Erwartungen. Ihre Aufmerksamkeit verlagerte sich auf Effizienz, Frieden und den Schutz Ihres eigenen Raums. Sie schnitten alles ab, was keine tiefere Bedeutung hatte, und konzentrierten sich auf das, was wirklich Ergebnisse bringt."
-                ],
-                today: [
-                    "Heute stehen Sie an einem Punkt der grundlegenden inneren Abrechnung. Sie weigern sich, dysfunktionale Bindungen und toxische Kompromisse weiter aufrechtzuerhalten, nur um 'zu passen'. Ihre Seele fordert Wahrheit, Frieden und Raum zum Atmen ohne den ständigen Druck, sich vor anderen rechtfertigen zu müssen.",
-                    "Gegenwärtig durchschauen Sie klar die Verstellung der Menschen und Ihre eigenen alten Abwehrprogramme. Sie haben eine immense Klarheit, aber auch eine spürbare Müdigkeit von den Kämpfen der Vergangenheit. Sie durchlaufen eine Phase, in der Stille und innere Stabilität wertvoller sind als der Versuch, jemandem etwas zu beweisen.",
-                    "Heute ist Ihre Hauptaufgabe, ein Gleichgewicht zwischen Ihrer starken Rationalität und tiefem inneren Frieden zu finden. Sie wissen, wer Sie sind, Sie kennen Ihre Schwachstellen und haben keine Angst mehr, authentisch zu sein, auch wenn das bedeutet, in manchen Dingen völlig allein zu stehen."
-                ],
-                shadow: [
-                    "Ihre dunkle Seite manifestiert sich in Momenten, in denen Sie unter Druck in intellektuelle Arroganz und eisige Distanz verfallen. Sie neigen dazu, Menschen um sich herum aus der Position 'wer hat es mehr durchdacht' zu beurteilen, und Ihre Waffe ist oft eine scharfe, präzise gerichtete Wahrheit, die Sie nicht aus Liebe sagen, sondern damit Ihr Ego den Sieg spürt. Sie rationalisieren Ihre Ungeduld und Härte damit, dass 'Sie wenigstens ehrlich sind'.",
-                    "Ihr Schatten liegt in der tief verwurzelten Überzeugung, dass Dinge scheitern, wenn Sie sie nicht fest in die Hand nehmen. Im Zustand der Bedrohung verwandeln Sie sich in einen kompromisslosen Kontrolleur, der die Schwäche anderer verurteilt und jede Abweichung von den Regeln mit stillem Ignorieren oder Zynismus bestraft. Sie nutzen Ihre Intelligenz als Panzer, der Sie davor schützt, zuzugeben, dass auch Sie Unterstützung brauchen.",
-                    "Die dunkle Seite fängt Sie manchmal in stillem Stolz und dem Gefühl ein, ein einsamer Beobachter in der Welt zu sein, dem niemand folgen kann. Statt Verbindung mit Ihrer Umgebung wählen Sie Isolation und Verachtung für das System, wodurch Sie selbst Barrieren schaffen, über die Sie sich dann beklagen."
-                ],
-                future: [
-                    "Die Zukunft wird tiefe Befriedigung und die Ernte Ihrer inneren Arbeit bringen, wenn Sie das Bedürfnis aufgeben, in allem das letzte Wort zu haben. Sie steuern auf eine stille, natürliche Macht zu, in der Sie nicht um Anerkennung kämpfen müssen – Ihre Ergebnisse und Ihr Frieden werden für Sie sprechen.",
-                    "Die nächste Lebensphase fordert Sie auf, vom Kampf gegen die Fehler der Welt zum Aufbau Ihres eigenen sicheren Hafens überzugehen. Sie werden tiefe Unabhängigkeit und Ausgeglichenheit gewinnen, sobald Sie aufhören, Energie für die Korrektur von Menschen zu verschwenden, die es nicht wollen.",
-                    "Die Entwicklung geht hin zu einem inneren Durchbruch und der Befreiung von den Lasten der Vergangenheit. Vor Ihnen liegt eine Zeit, in der Ihre Erfahrungen mit reiner Absicht verschmelzen, um Werte zu schaffen, die Bestand haben."
-                ],
-                motivation: [
-                    "Ihre wahre treibende Kraft ist ein unaufhaltsames Verlangen nach **Wahrheit, Freiheit und innerer Souveränität**. Sie können Manipulation, Falschheit und die Auferlegung fremder Dogmen nicht ertragen. Sie werden von der inneren Überzeugung angetrieben, dass Sie Dinge tief verstehen und nach Ihren eigenen Regeln leben müssen.",
-                    "Sie werden von dem Bedürfnis angetrieben, einen festen Punkt in einer instabilen Welt zu haben und Ihre Integrität zu schützen. Ihre treibende Kraft ist kontinuierliches Lernen, das Suchen nach Wesentlichem und der Einsatz, sich nicht vom System oder Ihrer eigenen Angst versklaven zu lassen.",
-                    "Sie werden von einem tiefen Hunger nach Sinnhaftigkeit motiviert. Sie geben sich nicht mit halben Antworten zufrieden. Sie wollen Dinge klar, rein und ohne Verzierungen sehen, was Sie auch in widrigen Umständen vorantreibt."
-                ],
-                override: [
-                    "Ethischer Override: Dieses System löscht alle alten Programme von Angst, Schuld und Abhängigkeit von fremden Meinungen. Sie trennen sich von kollektiven Dogmen, Massenhysterie und dem Bedürfnis, sich dort anzupassen, wo Sie sich selbst verlieren. Ihre Wahl von nun an: Keine Kulte oder Autoritäten mehr. Sie gehen im Namen Ihrer eigenen Reinheit und Ihres Friedens, während Sie Gutes tun, wo es wirklich zählt.",
-                    "Ethischer Override: Endgültiges Durchbrechen der Ketten. Erkennen Sie, dass wahre Freiheit nicht von außen kommt, sondern aus der inneren Entschlossenheit, sich Ihr Leben nicht mit fremden Dramen zu verkomplizieren. Dieser Punkt bringt Sie zu Ihrer wesentlichen Stärke zurück – Sie helfen, wo es rein ist, aber Sie übernehmen wieder volle Verantwortung für Ihre eigene Energie.",
-                    "Ethischer Override: Mentaler Neustart und Rückkehr zur Souveränität. Sie befreien sich von dem Bedürfnis, gegen die Lügen dieser Welt zu kämpfen. Ihre stärkste Waffe ist nicht mehr der Widerstand, sondern absoluter innerer Frieden und das Leben in Wahrheit, ohne andere davon überzeugen zu müssen."
-                ],
-                radar: [
-                    "Die heutige absolute Priorität: Keine Unze Energie für Konfrontationen mit Dummheit oder fremden Emotionen zu verschwenden. Wenn Druck entsteht, treten Sie einen Schritt zurück in die Stille. Richten Sie Ihre Kraft ausschließlich auf Frieden und die Vollendung Ihrer eigenen Absichten.",
-                    "Heute vermeiden Sie die Falle, Ihre Wahrheit um jeden Preis zu beweisen. Das Universum testet Ihre Geduld. Bleiben Sie in einer coolen, liebevollen Distanz und lassen Sie sich nicht in fremde Dramen hineinziehen.",
-                    "Die heutige Regel: Weniger Reden, mehr reine Handlung. Nutzen Sie Ihren scharfen Intellekt heute, um Ihren eigenen Raum zu reinigen, nicht um Ihre Umgebung zu beurteilen. Bewachen Sie Ihre Grenzen mit einem Lächeln."
-                ],
-                daily: [
-                    "Der tägliche Resonanzcode erinnert Sie daran, dass Ihre Stabilität in Ihren Händen liegt. Lassen Sie sich nicht von äußeren Erschütterungen aus der Bahn werfen – sie sind nur Wellen an der Oberfläche.",
-                    "Konzentrieren Sie sich heute auf einfache Dinge: Atem, Stille, einen klaren Schritt. Ihre Energie ordnet sich selbst, wenn Sie aufhören, sie zu behindern.",
-                    "Akzeptieren Sie den heutigen Tag so, wie er ist. Kein Kampf, keine Überzeugung. Ihre Anwesenheit spricht lauter als tausend Worte."
-                ]
-            },
-            cz: {
-                childhood: [
-                    "Už v dětství jste velmi brzy pochopili, že svět není prostorem bezpodmínečné jistoty, ale místem, kde se musíte naučit stát na vlastních nohou. Byl jste citlivý pozorovatel atmosféry kolem sebe – vnímal jste každé napětí dříve, než se projevilo navenek. Tato zkušenost ve vás probudila hlubokou samostatnost a tichou obranu.",
-                    "V dětských letech jste nesli vnitřní nutnost dokazovat svou hodnotu. Vaše nitro vyžadovalo porozumění, které často nenašlo odezvu, a tak jste si vybudovali pevný vnitřní svět. Už tehdy se rodila vaše potřeba kontrolovat situace, abyste předešli pocitu bezmoci.",
-                    "Dětství pro vás znamenalo tichý boj mezi touhou po přijetí a potřebou svobody. Brzy jste pochopili, že spoléhat se na druhé přináší riziko zklamání. Tento základ zformoval vaši schopnost nést odpovědnost daleko za hranice vašeho věku."
-                ],
-                teen: [
-                    "Dospívání bylo obdobím vnitřního vzdoru, kdy jste odmítali akceptovat povrchní pravidla a autority bez hlubšího smyslu. Vaše mysl postupovala rychleji než prostředí, ve kterém jste žili, což vás často izolovalo. Vytvořili jste si štít nezávislosti, abyste skryli svou zranitelnost před světem.",
-                    "V pubertě se naplno projevila vaše potřeba pevné identity. Každý pokus okolí vtlačit vás do šablon narážel na odpor. Místo přizpůsobení se většině jste raději zvolili náročnější cestu ověřování vlastních pravd na základě vlastních chyb.",
-                    "Dospívání se neslo ve znamení maskování nejistoty intelektem a chladným nadhledem. Přesně jste věděli, kdy poukázat na nesmyslnost cizích názorů, čímž jste si chránili své citlivé nitro před zraněním."
-                ],
-                adult: [
-                    "V dospělosti jste převzali plnou réžii nad svým životem, ale za cenu obrovského vnitro-energetického nasazení. Vybudovali jste si pozici, kde se od vás očekává síla a řešení problémů druhých. Hluboko uvnitř však občas cítíte únavu z toho, že málokdo vidí, kolik sil vás stojí udržovat tento systém pohromadě.",
-                    "Dospělost pro vás znamenala přechod od vnějších bojů k budování skutečných hodnot. Naráželi jste na alibismus a slabost v okolí, což ve vás vyvolávalo zklamání, ale zároveň vás to vyformovalo do podoby člověka, na kterého se dá spolehnout, i když jde do tuhého.",
-                    "V dospělosti jste prokoukli iluze společenských očekávání. Vaše pozornost se přesunula k efektivitě, klidu a ochraně vlastního prostoru. Odstřihli jste vše, co nemělo hlubší význam, a zaměřili se na to, co skutečně přináší výsledky."
-                ],
-                today: [
-                    "Dnes stojíte v bodě zásadního vnitřního zúčtování. Odmítáte dále udržovat nefunkční vazby a toxické kompromisy jen proto, abyste 'vyhověli'. Vaše duše si žádá pravdu, klid a prostor dýchat bez neustálého tlaku obhajovat se před ostatními.",
-                    "V současnosti přesně vidíte skrz přetvářku lidí i vlastní staré obranné programy. Máte obrovskou jasnost, ale zároveň vnímanou únavu z bojů minulosti. Procházíte fází, kde ticho a vnitřní stabilita mají větší cenu než snaha někomu něco dokazovat.",
-                    "Dnes je vaším hlavním úkolem najít rovnováhu mezi svou silnou racionalitou a hlubokým vnitřním klidem. Víte, kdo jste, znáte své slabé stránky a už se nebojíte být autentičtí, i když to znamená stát v některých věcech úplně sami."
-                ],
-                shadow: [
-                    "Vaše temná stránka se projevuje v chvílích, kdy pod tlakem přepínáte do arogance intelektu a mrazivého odstupu. Máte tendenci soudit lidi kolem sebe z pozice 'kdo to má víc promyšlené' a vaší zbraní bývá ostrá, přesně mířená pravda, kterou říkáte ne z lásky, ale proto, aby vaše ego pocítilo vítězství. Racionalizujete si vlastní netrpělivost a tvrdost tím, že 'vy jste aspoň upřímní'.",
-                    "Váš stín spočívá v hluboce zakořeněném přesvědčení, že pokud věci nevezmete pevně do rukou vy, tak selžou. Ve stavu ohrožení se měníte na nekompromisního kontrolora, který odsuzuje slabost druhých a každou odchylku od pravidel trestá tichým ignorováním nebo cynismem. Používáte svou inteligenci jako pancíř, který vás chrání před přiznáním, že i vy potřebujete podporu.",
-                    "Temná stránka vás občas uvězní v tiché pýše a pocitu, že jste na světě osamělý pozorovatel, kterému nikdo nestačí. Místo spojení s okolím volíte izolaci a pohrdání systémem, čímž si sami vytváříte bariéry, na které se potom stěžujete."
-                ],
-                future: [
-                    "Budoucnost přinese hluboké uspokojení a sklizeň plodů vaší vnitřní práce, pokud se vzdáte potřeby mít ve všem poslední slovo. Směřujete k tiché, přirozené moci, kde nebudete muset bojovat o uznání – vaše výsledky a klid budou mluvit za vás.",
-                    "Další fáze života vás vyzývá k přechodu od boje proti chybám světa k budování vlastního bezpečného přístavu. Získáte hlubokou nezávislost a rovnováhu, jakmile přestanete plýtvat energií na nápravu lidí, kteří o to nestojí.",
-                    "Vývoj směřuje k vnitřnímu průlomu a osvobození od minulých břemen. Před vámi je období, kdy se vaše zkušenosti spojí s čistým záměrem tvořit hodnoty, které přežijí."
-                ],
-                motivation: [
-                    "Vaší skutečnou hybnou silou je nezastavitelná touha po **pravdě, svobodě a vnitřní suverenitě**. Nesnášíte manipulaci, faleš a vnucování cizích dogmat. Žene vás vnitřní přesvědčení, že musíte věci pochopit do hloubky a žít život podle vlastních pravidel.",
-                    "Žene vás potřeba mít pevný bod v nestálém světě a ochránit si svou integritu. Vaší hnací silou je neustálé vzdělávání, hledání podstaty a snaha nenechat se zotročit systémem ani vlastním strachem.",
-                    "Motivuje vás hluboký hlad po smysluplnosti. Nespokojíte se s polovičatými odpověďmi. Chcete vidět věci jasně, čistě a bez příkras, což vás pohání vpřed i v okamžiku, kdy jsou podmínky nepříznivé."
-                ],
-                override: [
-                    "Etický Override: Tento systém ruší všechny staré programy strachu, viny a závislosti na cizích míněních. Odpojujete se od kolektivních dogmat, masové hysterie a potřeby zapadat tam, kde ztrácíte sebe. Vaše volba odteď: Žádné další kulty ani autority. Kráčíte ve jménu vlastní čistoty a klidu, přičemž konáte dobro tam, kde to má reálný smysl.",
-                    "Etický Override: Definitivní přetržení řetězů. Uvědomte si, že skutečná svoboda nepřichází zvenčí, ale z vnitřní rozhodnosti nekomplikovat si život cizími dramaty. Tento bod vás vrací k vaší esenciální síle – pomáháte tam, kde je to čisté, ale berete si zpět plnou odpovědnost za vlastní energii.",
-                    "Etický Override: Mentální restart a návrat k suverenitě. Zbavujete se potřeby bojovat proti lžím tohoto světa. Vaší nejsilnější zbraní už není odpor, ale absolutní vnitřní klid a život v pravdě bez potřeby přesvědčovat o ní jiné."
-                ],
-                radar: [
-                    "Dnešní absolutní priorita: Neplýtvat ani uncí energie na konfrontace s hloupostí nebo cizími emocemi. Pokud se objeví tlak, udělejte krok vzad do ticha. Směřujte svou sílu výhradně do klidu a dokončení vlastních záměrů.",
-                    "Dnes se vyhněte pasti dokazování své pravdy za každou cenu. Vesmír vám testuje míru trpělivosti. Zůstaňte v chladném, laskavém nadhledu a nenechte se vtáhnout do cizích dramat.",
-                    "Dnes platí pravidlo: Méně řečí, více čistého konání. Svůj ostrý intelekt dnes použijte na úklid vlastního prostoru, ne na hodnocení okolí. Hlídejte si své hranice s úsměvem."
-                ],
-                daily: [
-                    "Denní kód rezonance ti připomíná, že tvá stabilita je v tvých rukou. Nenech se vykolejit vnějšími otřesy – jsou to jen vlny na hladině.",
-                    "Dnes se soustřeď na jednoduché věci: dech, ticho, jeden čistý krok. Tvá energie se sama uspořádá, pokud jí přestaneš překážet.",
-                    "Přijmi dnešek takový, jaký je. Žádný boj, žádné přesvědčování. Tvá přítomnost mluví víc než tisíce slov."
-                ]
+            // ================================================================
+            // 2. NUMEROLOGICKÉ FUNKCIE
+            // ================================================================
+            function numerologySum(str) {
+                let sum = 0;
+                for (let ch of str) {
+                    let d = parseInt(ch);
+                    if (!isNaN(d)) sum += d;
+                }
+                while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                    sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                }
+                return sum;
             }
-        };
 
-        const app = {
-            init() {
-                this.cacheDom();
-                this.bindEvents();
-                this.populateDates();
-                this.updateLanguage('sk');
-            },
-
-            cacheDom() {
-                this.dom = {
-                    langButtons: document.querySelectorAll('.lang-selector button'),
-                    fullName: document.getElementById('fullName'),
-                    birthDay: document.getElementById('birthDay'),
-                    birthMonth: document.getElementById('birthMonth'),
-                    birthYear: document.getElementById('birthYear'),
-                    genderButtons: document.querySelectorAll('.gender-toggle button'),
-                    btnStart: document.getElementById('btnStart'),
-                    btnRestart: document.getElementById('btnRestart'),
-                    formSection: document.getElementById('formSection'),
-                    resultsContainer: document.getElementById('resultsContainer'),
-                    cardsWrapper: document.getElementById('cardsWrapper'),
-                    metaTags: document.getElementById('metaTags'),
-                    appTitle: document.getElementById('appTitle'),
-                    subBrand: document.getElementById('subBrand'),
+            function nameToNumber(name) {
+                const map = {
+                    'a': 1, 'á': 1, 'ä': 1, 'b': 2, 'c': 3, 'č': 3, 'd': 4, 'ď': 4,
+                    'e': 5, 'é': 5, 'ě': 5, 'f': 6, 'g': 7, 'h': 8, 'ch': 8, 'i': 9,
+                    'í': 9, 'j': 1, 'k': 2, 'l': 3, 'm': 4, 'n': 5, 'ň': 5, 'o': 6,
+                    'ó': 6, 'ô': 6, 'p': 7, 'q': 8, 'r': 9, 'ř': 9, 's': 1, 'š': 1,
+                    't': 2, 'ť': 2, 'u': 3, 'ú': 3, 'ů': 3, 'v': 4, 'w': 5, 'x': 6,
+                    'y': 7, 'ý': 7, 'z': 8, 'ž': 8
                 };
-                this.gender = 'm';
-                this.lang = 'sk';
-                this.seed = 0;
-                this.lifePath = 0;
-                this.destiny = 0;
-            },
+                let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g, '');
+                let sum = 0;
+                for (let ch of clean) {
+                    if (map[ch]) sum += map[ch];
+                }
+                while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                    sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                }
+                return sum;
+            }
 
-            bindEvents() {
-                this.dom.langButtons.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.updateLanguage(btn.dataset.lang);
+            function getVowelsSum(name) {
+                const vowels = 'aeiouyáäéíóôúý';
+                let sum = 0;
+                let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g, '');
+                for (let ch of clean) {
+                    if (vowels.includes(ch)) {
+                        const map = {
+                            'a': 1, 'á': 1, 'ä': 1, 'e': 5, 'é': 5, 'ě': 5,
+                            'i': 9, 'í': 9, 'o': 6, 'ó': 6, 'ô': 6, 'u': 3,
+                            'ú': 3, 'ů': 3, 'y': 7, 'ý': 7
+                        };
+                        sum += map[ch] || 0;
+                    }
+                }
+                while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                    sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                }
+                return sum;
+            }
+
+            function getConsonantsSum(name) {
+                const vowels = 'aeiouyáäéíóôúý';
+                let sum = 0;
+                let clean = name.toLowerCase().replace(/[^a-záäčďéěíňóôřšťúůýž]/g, '');
+                for (let ch of clean) {
+                    if (!vowels.includes(ch)) {
+                        const map = {
+                            'b': 2, 'c': 3, 'č': 3, 'd': 4, 'ď': 4, 'f': 6,
+                            'g': 7, 'h': 8, 'ch': 8, 'j': 1, 'k': 2, 'l': 3,
+                            'm': 4, 'n': 5, 'ň': 5, 'p': 7, 'q': 8, 'r': 9,
+                            'ř': 9, 's': 1, 'š': 1, 't': 2, 'ť': 2, 'v': 4,
+                            'w': 5, 'x': 6, 'z': 8, 'ž': 8
+                        };
+                        sum += map[ch] || 0;
+                    }
+                }
+                while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                    sum = String(sum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                }
+                return sum;
+            }
+
+            function getAdjustedDate(year, month, day, daysOffset) {
+                const d = new Date(year, month - 1, day);
+                d.setDate(d.getDate() + daysOffset);
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                return `${y}${m}${dd}`;
+            }
+
+            function getPersonalYear(day, month, year) {
+                const currentYear = new Date().getFullYear();
+                const sum = numerologySum(String(day) + String(month) + String(currentYear));
+                return sum;
+            }
+
+            function getPersonalMonth(personalYear) {
+                const currentMonth = new Date().getMonth() + 1;
+                const sum = numerologySum(String(personalYear) + String(currentMonth));
+                return sum;
+            }
+
+            function getPersonalDay(personalYear, personalMonth) {
+                const currentDay = new Date().getDate();
+                const sum = numerologySum(String(personalYear) + String(personalMonth) + String(currentDay));
+                return sum;
+            }
+
+            function getChallenge(day, month) {
+                const diff = Math.abs(parseInt(day) - parseInt(month));
+                return numerologySum(String(diff));
+            }
+
+            function getMaturity(lifePath, destiny) {
+                return numerologySum(String(lifePath + destiny));
+            }
+
+            // ================================================================
+            // 3. GENERÁTOR TEXTU – 8 ČASTÍ, KAŽDÁ Z KOMBINÁCIE ČÍSEL
+            // ================================================================
+            function generateIntro(lifePath, design) {
+                const introMap = {
+                    '1': {
+                        text: 'Si prirodzený vodca. Od narodenia si mal v sebe túžbu ísť svojou cestou, často sám. Tvoja duša túži po nezávislosti a originalite.',
+                        design: 'V tvojom podvedomí drieme tvorivá sila, ktorá čaká na správny okamih.'
+                    },
+                    '2': {
+                        text: 'Si citlivý a vnímavý. Vnímaš veci, ktoré ostatní prehliadajú. Tvoja sila je v spolupráci, nie v samote.',
+                        design: 'Tvoj vnútorný svet je plný harmónie, ktorú hľadáš aj navonok.'
+                    },
+                    '3': {
+                        text: 'Si rodený komunikátor. Slová sú tvojou zbraňou a tvojím darom. Tvoja radosť je v tom, že môžeš inšpirovať druhých.',
+                        design: 'Tvoj podvedomý dar je v tom, že vieš rozosmiať aj tie najťažšie chvíle.'
+                    },
+                    '4': {
+                        text: 'Si staviteľ. Potrebuješ pevné základy, poriadok a štruktúru. Tvoja sila je v tvrdej práci a vytrvalosti.',
+                        design: 'Tvoje podvedomie túži po slobode, ktorú si zatiaľ nedovolil.'
+                    },
+                    '5': {
+                        text: 'Si dobrodruh. Zmena je tvojím palivom. Potrebuješ slobodu a pestrosť, inak sa dusíš.',
+                        design: 'V hĺbke duše však túžiš po stabilite, ktorú si ešte nenašiel.'
+                    },
+                    '6': {
+                        text: 'Si ochranca. Tvoja sila je v starostlivosti o druhých. Nájdeš zmysel v pomoci a láske.',
+                        design: 'Tvoje podvedomie ti hovorí, že aj ty si zaslúžiš byť chránený.'
+                    },
+                    '7': {
+                        text: 'Si hľadač. Potrebuješ pochopiť svet okolo seba. Tvoja cesta je o objavovaní pravdy.',
+                        design: 'V tvojom vnútri drieme múdrosť, ktorá čaká na prebudenie.'
+                    },
+                    '8': {
+                        text: 'Si tvorca. Máš v sebe silu pretvárať svet okolo seba. Tvoja cesta je o moci a zodpovednosti.',
+                        design: 'Tvoje podvedomie túži po rovnováhe medzi duchovným a materiálnym.'
+                    },
+                    '9': {
+                        text: 'Si humanista. Tvoja cesta je o službe ľudstvu. Máš v sebe nesmiernu empatiu a porozumenie.',
+                        design: 'Tvoj vnútorný svet je plný ideálov, ktoré chceš pretaviť do reality.'
+                    }
+                };
+                const lifeKey = String(lifePath);
+                const designKey = String(design);
+                const base = introMap[lifeKey] || introMap['1'];
+                const designText = introMap[designKey] ? introMap[designKey].design : base.design;
+                return `${base.text} ${designText}`;
+            }
+
+            function generateChildhood(lifePath, challenge) {
+                const map = {
+                    '1-1': 'Už ako dieťa si mal potrebu byť prvý. Všetko si chcel robiť sám, po svojom. Tvoja samostatnosť bola tvojou pýchou, ale občas aj tvojou osamelosťou.',
+                    '1-2': 'Už ako dieťa si bol citlivý na nespravodlivosť. Videl si veci, ktoré ostatní prehliadali. Tvoja duša túžila po harmónii.',
+                    '1-3': 'Už ako dieťa si mal dar slova. Vedel si rozprávať príbehy, ktoré uchvátili každého. Tvoja fantázia nemala hraníc.',
+                    '1-4': 'Už ako dieťa si bol praktický. Staval si pevné hrady z piesku a plány na budúcnosť. Tvoja vytrvalosť bola obdivuhodná.',
+                    '1-5': 'Už ako dieťa si bol malý dobrodruh. Svet bol tvojím ihriskom a každý deň prinášal nové objavy. Tvoja zvedavosť nepoznala konca.',
+                    '1-6': 'Už ako dieťa si mal srdce na dlani. Staral si sa o zvieratá, o kamarátov, o všetkých, ktorí to potrebovali. Tvoja láskavosť bola tvojou superschopnosťou.',
+                    '1-7': 'Už ako dieťa si bol zamyslený. Pýtal si sa otázky, na ktoré nikto nevedel odpovedať. Tvoj vnútorný svet bol bohatší než ten vonkajší.',
+                    '1-8': 'Už ako dieťa si mal v sebe silu. Vedel si, že dokážeš čokoľvek, čo si si zaumienil. Tvoja odhodlanosť ťa formovala.',
+                    '1-9': 'Už ako dieťa si vnímal svet inak. Videl si krásu v maličkostiach a bolesť vo svete. Tvoja empatia bola tvojím darom a tieňom.',
+                    '2-1': 'Už ako dieťa si bol jemný a citlivý. Vnímal si napätie v miestnosti skôr, než sa prejavilo. Tvoj pokoj bol tvojou silou.',
+                    '2-2': 'Už ako dieťa si hľadal harmóniu. Vedel si, že keď sú ľudia okolo teba spokojní, ty si spokojný. Tvoja citlivosť ťa formovala.',
+                    '2-3': 'Už ako dieťa si miloval rozprávky a príbehy. Slová boli tvojím svetom a ty si v nich našiel útechu.',
+                    '2-4': 'Už ako dieťa si bol spoľahlivý. Vedel si, že keď niečo sľúbiš, musíš to dodržať. Tvoja zodpovednosť bola nad tvoj vek.',
+                    '2-5': 'Už ako dieťa si bol zvedavý. Svet bol pre teba záhadou, ktorú si chcel rozlúštiť. Tvoja túžba po poznaní ťa formovala.',
+                    '2-6': 'Už ako dieťa si bol starostlivý. Chránil si slabších a mal si cit pre spravodlivosť. Tvoje srdce bolo veľké.',
+                    '2-7': 'Už ako dieťa si bol tichý pozorovateľ. Radšej si počúval, než rozprával. Tvoja múdrosť bola nad tvoj vek.',
+                    '2-8': 'Už ako dieťa si vedel, že svet nie je spravodlivý. Naučil si sa bojovať za svoje miesto a za svoju pravdu.',
+                    '2-9': 'Už ako dieťa si mal dar porozumenia. Vedel si, čo druhí potrebujú, často skôr než oni sami. Tvoja empatia bola výnimočná.',
+                    '3-1': 'Už ako dieťa si bol rodený zabávač. Vedel si rozosmiať každého, aj v najťažších chvíľach. Tvoj optimizmus bol nákazlivý.',
+                    '3-2': 'Už ako dieťa si miloval umenie. Kreslil si, spieval si, tancoval si. Tvoja kreativita nemala hraníc.',
+                    '3-3': 'Už ako dieťa si bol plný energie. Každý deň bol pre teba dobrodružstvom a tvoja radosť zo života bola nákazlivá.',
+                    '3-4': 'Už ako dieťa si vedel, že všetko má svoj čas. Tvoja trpezlivosť bola obdivuhodná a tvoja vytrvalosť ťa formovala.',
+                    '3-5': 'Už ako dieťa si bol malý rebel. Pravidlá si bral ako výzvu a tvoja túžba po slobode ťa formovala.',
+                    '3-6': 'Už ako dieťa si mal dar prinášať radosť. Tvoj smiech bol nákazlivý a tvoja prítomnosť rozjasňovala miestnosti.',
+                    '3-7': 'Už ako dieťa si mal bohatý vnútorný svet. Rozprávky a fantázia boli tvojím útočiskom.',
+                    '3-8': 'Už ako dieťa si mal v sebe odvahu. Nebál si sa ísť proti prúdu a bojovať za to, čo si považoval za správne.',
+                    '3-9': 'Už ako dieťa si vnímal krásu sveta. Tvoja citlivosť na umenie a pravdu ťa formovala.',
+                    '4-1': 'Už ako dieťa si bol staviteľ. Z kostiek si vytváral svety a z papiera celé kráľovstvá. Tvoja predstavivosť a praktickosť šli ruka v ruke.',
+                    '4-2': 'Už ako dieťa si potreboval poriadok. Tvoja izba bola vždy uprataná a tvoje myšlienky vždy usporiadané.',
+                    '4-3': 'Už ako dieťa si mal dar organizácie. Vedel si zariadiť, aby všetko fungovalo ako hodinky.',
+                    '4-4': 'Už ako dieťa si bol vytrvalý. Keď si si niečo umienil, nič ťa nezastavilo. Tvoja odhodlanosť bola tvojou superschopnosťou.',
+                    '4-5': 'Už ako dieťa si túžil po dobrodružstve, no zároveň si potreboval istotu. Tento rozpor ťa formoval.',
+                    '4-6': 'Už ako dieťa si bol spoľahlivý. Tvoja rodina sa na teba mohla spoľahnúť a ty si to vedel.',
+                    '4-7': 'Už ako dieťa si premýšľal o zmysle života. Tvoje otázky boli hlboké a tvoja myseľ zvedavá.',
+                    '4-8': 'Už ako dieťa si mal v sebe silu pretvárať veci. Vedel si, že tvrdá práca prináša ovocie.',
+                    '4-9': 'Už ako dieťa si mal cit pre spravodlivosť. Videl si, čo je správne a čo nie, a nebál si sa to povedať.',
+                    '5-1': 'Už ako dieťa si bol malý objaviteľ. Žiadny kút nebol príliš vzdialený a žiadna hranica príliš vysoká.',
+                    '5-2': 'Už ako dieťa si mal potrebu meniť veci. Pravidlá si bral ako návrhy a tvoja kreativita nemala hraníc.',
+                    '5-3': 'Už ako dieťa si bol rodený zabávač. Tvoj smiech bol nákazlivý a tvoja energia nevyčerpateľná.',
+                    '5-4': 'Už ako dieťa si potreboval slobodu. Škola a pravidlá ťa dusili a tvoja duša túžila po voľnosti.',
+                    '5-5': 'Už ako dieťa si bol samostatný. Odmalička si si vedel poradiť a tvoja nezávislosť bola obdivuhodná.',
+                    '5-6': 'Už ako dieťa si mal dar prinášať radosť. Tvoja prítomnosť rozjasňovala miestnosti a tvoj smiech bol nákazlivý.',
+                    '5-7': 'Už ako dieťa si túžil pochopiť svet. Tvoja myseľ bola zvedavá a tvoje otázky hlboké.',
+                    '5-8': 'Už ako dieťa si mal v sebe odvahu. Nebál si sa riskovať a tvoja dobrodružnosť ťa formovala.',
+                    '5-9': 'Už ako dieťa si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '6-1': 'Už ako dieťa si bol starostlivý. Tvoja rodina bola tvojím svetom a ty si chránil každého člena.',
+                    '6-2': 'Už ako dieťa si mal srdce na dlani. Pomáhal si všetkým, ktorí to potrebovali, a tvoja láskavosť bola obdivuhodná.',
+                    '6-3': 'Už ako dieťa si mal dar prinášať harmóniu. Vedel si upokojiť napätie a tvoja prítomnosť bola upokojujúca.',
+                    '6-4': 'Už ako dieťa si bol zodpovedný. Tvoja rodina sa na teba mohla spoľahnúť a ty si to bral vážne.',
+                    '6-5': 'Už ako dieťa si mal potrebu slobody, no zároveň si potreboval bezpečie. Tento rozpor ťa formoval.',
+                    '6-6': 'Už ako dieťa si bol ochranca. Chránil si slabších a tvoja sila bola v tvojej jemnosti.',
+                    '6-7': 'Už ako dieťa si mal hlboké myšlienky. Pýtal si sa na zmysel vecí a tvoja myseľ bola zvedavá.',
+                    '6-8': 'Už ako dieťa si mal v sebe odvahu. Nebál si sa ísť proti prúdu a bojovať za to, čo si považoval za správne.',
+                    '6-9': 'Už ako dieťa si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '7-1': 'Už ako dieťa si bol zamyslený. Tvoja myseľ bola plná otázok a tvoja duša túžila po poznaní.',
+                    '7-2': 'Už ako dieťa si bol tichý pozorovateľ. Radšej si počúval, než rozprával, a tvoja múdrosť bola nad tvoj vek.',
+                    '7-3': 'Už ako dieťa si mal bohatý vnútorný svet. Fantázia a sny boli tvojím útočiskom.',
+                    '7-4': 'Už ako dieťa si potreboval poriadok v myšlienkach. Tvoja myseľ bola systematická a tvoje otázky presné.',
+                    '7-5': 'Už ako dieťa si túžil po dobrodružstve, no zároveň si potreboval istotu. Tento rozpor ťa formoval.',
+                    '7-6': 'Už ako dieťa si mal cit pre harmóniu. Vedel si, keď je niekto smutný, a tvoja empatia bola obdivuhodná.',
+                    '7-7': 'Už ako dieťa si bol hľadač pravdy. Tvoja myseľ bola zvedavá a tvoje otázky hlboké.',
+                    '7-8': 'Už ako dieťa si mal v sebe silu. Vedel si, že dokážeš čokoľvek, čo si si zaumienil.',
+                    '7-9': 'Už ako dieťa si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '8-1': 'Už ako dieťa si mal v sebe odvahu. Nebál si sa riskovať a tvoja sila bola obdivuhodná.',
+                    '8-2': 'Už ako dieťa si bol citlivý na nespravodlivosť. Videl si veci, ktoré ostatní prehliadali, a tvoja duša túžila po zmene.',
+                    '8-3': 'Už ako dieťa si mal dar komunikácie. Vedel si presvedčiť a tvoja výrečnosť bola obdivuhodná.',
+                    '8-4': 'Už ako dieťa si bol praktický. Vedel si, že tvrdá práca prináša ovocie, a tvoja vytrvalosť ťa formovala.',
+                    '8-5': 'Už ako dieťa si túžil po slobode. Pravidlá ťa dusili a tvoja duša túžila po dobrodružstve.',
+                    '8-6': 'Už ako dieťa si mal srdce na dlani. Staral si sa o druhých a tvoja láskavosť bola obdivuhodná.',
+                    '8-7': 'Už ako dieťa si mal hlboké myšlienky. Pýtal si sa na zmysel vecí a tvoja myseľ bola zvedavá.',
+                    '8-8': 'Už ako dieťa si mal v sebe silu. Vedel si, že dokážeš čokoľvek, čo si si zaumienil.',
+                    '8-9': 'Už ako dieťa si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '9-1': 'Už ako dieťa si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '9-2': 'Už ako dieťa si bol citlivý na nespravodlivosť. Tvoja duša túžila po harmónii a tvoje srdce bolo veľké.',
+                    '9-3': 'Už ako dieťa si mal dar komunikácie. Vedel si rozprávať príbehy, ktoré uchvátili každého.',
+                    '9-4': 'Už ako dieťa si bol praktický. Vedel si, že tvrdá práca prináša ovocie, a tvoja vytrvalosť ťa formovala.',
+                    '9-5': 'Už ako dieťa si túžil po slobode. Svet bol tvojím ihriskom a tvoja zvedavosť nepoznala konca.',
+                    '9-6': 'Už ako dieťa si mal srdce na dlani. Staral si sa o druhých a tvoja láskavosť bola obdivuhodná.',
+                    '9-7': 'Už ako dieťa si bol zamyslený. Tvoja myseľ bola plná otázok a tvoja duša túžila po poznaní.',
+                    '9-8': 'Už ako dieťa si mal v sebe silu. Vedel si, že dokážeš čokoľvek, čo si si zaumienil.',
+                    '9-9': 'Už ako dieťa si bol humanista. Videl si krásu v maličkostiach a bolesť vo svete. Tvoja empatia bola tvojím darom a tieňom.'
+                };
+                const key = `${lifePath}-${challenge}`;
+                return map[key] || map['1-1'];
+            }
+
+            function generateTeen(destiny, personality) {
+                const map = {
+                    '1-1': 'V puberte si bol prirodzený vodca. Ostatní ťa počúvali a ty si mal jasnú predstavu o tom, kam chceš ísť. Tvoja nezávislosť bola tvojou silou.',
+                    '1-2': 'V puberte si bol citlivý a vnímavý. Vnímal si napätie okolo seba a tvoja duša túžila po porozumení.',
+                    '1-3': 'V puberte si bol rodený zabávač. Tvoj humor a charizma ťa robili stredobodom pozornosti.',
+                    '1-4': 'V puberte si bol zodpovedný. Ostatní sa na teba mohli spoľahnúť a ty si to bral vážne.',
+                    '1-5': 'V puberte si túžil po slobode. Pravidlá ťa dusili a tvoja duša túžila po dobrodružstve.',
+                    '1-6': 'V puberte si mal srdce na dlani. Staral si sa o druhých a tvoja láskavosť bola obdivuhodná.',
+                    '1-7': 'V puberte si bol zamyslený. Tvoja myseľ bola plná otázok a tvoja duša túžila po poznaní.',
+                    '1-8': 'V puberte si mal v sebe silu. Vedel si, že dokážeš čokoľvek, čo si si zaumienil.',
+                    '1-9': 'V puberte si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '2-1': 'V puberte si bol tichý a citlivý. Radšej si počúval, než rozprával, a tvoja múdrosť bola nad tvoj vek.',
+                    '2-2': 'V puberte si hľadal harmóniu. Vedel si, že keď sú ľudia okolo teba spokojní, ty si spokojný.',
+                    '2-3': 'V puberte si mal bohatý vnútorný svet. Fantázia a sny boli tvojím útočiskom.',
+                    '2-4': 'V puberte si bol spoľahlivý. Tvoja zodpovednosť bola obdivuhodná.',
+                    '2-5': 'V puberte si túžil po zmene. Cítil si, že svet čaká na to, aby si ho objavil.',
+                    '2-6': 'V puberte si bol starostlivý. Tvoja empatia a citlivosť ťa formovali.',
+                    '2-7': 'V puberte si bol tichý pozorovateľ. Tvoja myseľ bola zvedavá a tvoje otázky hlboké.',
+                    '2-8': 'V puberte si mal v sebe odvahu. Nebál si sa ísť proti prúdu.',
+                    '2-9': 'V puberte si mal cit pre spravodlivosť. Tvoja duša túžila po zmene.',
+                    '3-1': 'V puberte si bol rodený zabávač. Tvoj humor a charizma ťa robili stredobodom pozornosti.',
+                    '3-2': 'V puberte si miloval umenie a kreativitu. Tvoja fantázia nemala hraníc.',
+                    '3-3': 'V puberte si bol plný energie. Tvoja radosť zo života bola nákazlivá.',
+                    '3-4': 'V puberte si bol vytrvalý. Vedel si, že tvrdá práca prináša ovocie.',
+                    '3-5': 'V puberte si túžil po slobode a dobrodružstve. Pravidlá ťa dusili.',
+                    '3-6': 'V puberte si mal dar prinášať radosť. Tvoja prítomnosť rozjasňovala miestnosti.',
+                    '3-7': 'V puberte si mal bohatý vnútorný svet. Tvoja myseľ bola plná snov a otázok.',
+                    '3-8': 'V puberte si mal v sebe odvahu. Nebál si sa riskovať.',
+                    '3-9': 'V puberte si mal cit pre spravodlivosť. Tvoja duša túžila po zmene.',
+                    '4-1': 'V puberte si bol staviteľ. Vedel si, že pevné základy sú kľúčom k úspechu.',
+                    '4-2': 'V puberte si potreboval poriadok. Tvoja myseľ bola systematická.',
+                    '4-3': 'V puberte si mal dar organizácie. Vedel si zariadiť, aby všetko fungovalo.',
+                    '4-4': 'V puberte si bol vytrvalý. Nič ťa nezastavilo, keď si si niečo umienil.',
+                    '4-5': 'V puberte si túžil po slobode, no zároveň si potreboval istotu. Tento rozpor ťa formoval.',
+                    '4-6': 'V puberte si bol spoľahlivý. Tvoja rodina sa na teba mohla spoľahnúť.',
+                    '4-7': 'V puberte si premýšľal o zmysle života. Tvoje otázky boli hlboké.',
+                    '4-8': 'V puberte si mal v sebe silu pretvárať veci.',
+                    '4-9': 'V puberte si mal cit pre spravodlivosť. Nebál si sa povedať, čo si si myslel.',
+                    '5-1': 'V puberte si bol malý rebel. Pravidlá si bral ako výzvu.',
+                    '5-2': 'V puberte si mal potrebu meniť veci. Tvoja kreativita nemala hraníc.',
+                    '5-3': 'V puberte si bol rodený zabávač. Tvoj smiech bol nákazlivý.',
+                    '5-4': 'V puberte si potreboval slobodu. Škola a pravidlá ťa dusili.',
+                    '5-5': 'V puberte si bol samostatný. Tvoja nezávislosť bola obdivuhodná.',
+                    '5-6': 'V puberte si mal dar prinášať radosť. Tvoja prítomnosť rozjasňovala miestnosti.',
+                    '5-7': 'V puberte si túžil pochopiť svet. Tvoja myseľ bola zvedavá.',
+                    '5-8': 'V puberte si mal v sebe odvahu. Nebál si sa riskovať.',
+                    '5-9': 'V puberte si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '6-1': 'V puberte si bol starostlivý. Tvoja rodina bola tvojím svetom.',
+                    '6-2': 'V puberte si mal srdce na dlani. Tvoja láskavosť bola obdivuhodná.',
+                    '6-3': 'V puberte si mal dar prinášať harmóniu. Tvoja prítomnosť bola upokojujúca.',
+                    '6-4': 'V puberte si bol zodpovedný. Tvoja rodina sa na teba mohla spoľahnúť.',
+                    '6-5': 'V puberte si túžil po slobode, no zároveň si potreboval bezpečie.',
+                    '6-6': 'V puberte si bol ochranca. Chránil si slabších.',
+                    '6-7': 'V puberte si mal hlboké myšlienky. Pýtal si sa na zmysel vecí.',
+                    '6-8': 'V puberte si mal v sebe odvahu. Nebál si sa ísť proti prúdu.',
+                    '6-9': 'V puberte si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '7-1': 'V puberte si bol zamyslený. Tvoja myseľ bola plná otázok.',
+                    '7-2': 'V puberte si bol tichý pozorovateľ. Tvoja múdrosť bola nad tvoj vek.',
+                    '7-3': 'V puberte si mal bohatý vnútorný svet. Fantázia a sny boli tvojím útočiskom.',
+                    '7-4': 'V puberte si potreboval poriadok v myšlienkach. Tvoja myseľ bola systematická.',
+                    '7-5': 'V puberte si túžil po dobrodružstve, no zároveň si potreboval istotu.',
+                    '7-6': 'V puberte si mal cit pre harmóniu. Tvoja empatia bola obdivuhodná.',
+                    '7-7': 'V puberte si bol hľadač pravdy. Tvoja myseľ bola zvedavá.',
+                    '7-8': 'V puberte si mal v sebe silu. Vedel si, že dokážeš čokoľvek.',
+                    '7-9': 'V puberte si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '8-1': 'V puberte si mal v sebe odvahu. Nebál si sa riskovať.',
+                    '8-2': 'V puberte si bol citlivý na nespravodlivosť. Tvoja duša túžila po zmene.',
+                    '8-3': 'V puberte si mal dar komunikácie. Vedel si presvedčiť.',
+                    '8-4': 'V puberte si bol praktický. Tvoja vytrvalosť ťa formovala.',
+                    '8-5': 'V puberte si túžil po slobode. Pravidlá ťa dusili.',
+                    '8-6': 'V puberte si mal srdce na dlani. Tvoja láskavosť bola obdivuhodná.',
+                    '8-7': 'V puberte si mal hlboké myšlienky. Pýtal si sa na zmysel vecí.',
+                    '8-8': 'V puberte si mal v sebe silu. Vedel si, že dokážeš čokoľvek.',
+                    '8-9': 'V puberte si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '9-1': 'V puberte si mal cit pre spravodlivosť. Videl si krivdu a vedel si, že svet môže byť lepší.',
+                    '9-2': 'V puberte si bol citlivý na nespravodlivosť. Tvoja duša túžila po harmónii.',
+                    '9-3': 'V puberte si mal dar komunikácie. Vedel si rozprávať príbehy.',
+                    '9-4': 'V puberte si bol praktický. Tvoja vytrvalosť ťa formovala.',
+                    '9-5': 'V puberte si túžil po slobode. Svet bol tvojím ihriskom.',
+                    '9-6': 'V puberte si mal srdce na dlani. Tvoja láskavosť bola obdivuhodná.',
+                    '9-7': 'V puberte si bol zamyslený. Tvoja myseľ bola plná otázok.',
+                    '9-8': 'V puberte si mal v sebe silu. Vedel si, že dokážeš čokoľvek.',
+                    '9-9': 'V puberte si bol humanista. Tvoja empatia bola tvojím darom a tieňom.'
+                };
+                const key = `${destiny}-${personality}`;
+                return map[key] || map['1-1'];
+            }
+
+            function generateAdult(soulUrge, maturity) {
+                const map = {
+                    '1-1': 'V dospelosti si osvojil svoju nezávislosť. Si vodca, ktorý nebojuje o pozornosť, ale prirodzene ju priťahuje. Tvoja cesta je o tom, aby si sa stal tým, kým naozaj si.',
+                    '1-2': 'V dospelosti si našiel rovnováhu medzi svojou silou a citlivosťou. Už nebojuješ sám – učíš sa spolupracovať.',
+                    '1-3': 'V dospelosti si objavil silu svojho hlasu. Tvoja kreativita a komunikácia sú tvojimi najväčšími zbraňami.',
+                    '1-4': 'V dospelosti si pochopil hodnotu tvrdej práce. Buduješ pevné základy, na ktorých môžeš stáť.',
+                    '1-5': 'V dospelosti si našiel odvahu žiť podľa svojich pravidiel. Tvoja sloboda je tvojou najväčšou hodnotou.',
+                    '1-6': 'V dospelosti si objavil silu starostlivosti. Tvoja schopnosť milovať a chrániť je tvojím darom.',
+                    '1-7': 'V dospelosti si prehĺbil svoju múdrosť. Si hľadač pravdy, ktorý už vie, že odpovede sú v ňom samom.',
+                    '1-8': 'V dospelosti si sa stal tvorcom svojho osudu. Tvoja sila a odhodlanie ti umožňujú pretvárať svet.',
+                    '1-9': 'V dospelosti si objavil svoju ľudskosť. Si mostom medzi svetmi, prinášaš porozumenie a súcit.',
+                    '2-1': 'V dospelosti si našiel svoju vlastnú cestu. Tvoja citlivosť sa stala tvojou silou, nie slabosťou.',
+                    '2-2': 'V dospelosti si vytvoril harmóniu vo svojom vnútri. Tvoj pokoj je nákazlivý a tvoja prítomnosť lieči.',
+                    '2-3': 'V dospelosti si objavil silu slov. Tvoja komunikácia je mostom medzi ľuďmi.',
+                    '2-4': 'V dospelosti si pochopil, že stabilita je kľúčom k slobode. Tvoje základy sú pevné.',
+                    '2-5': 'V dospelosti si sa naučil prijímať zmenu. Tvoja flexibilita je tvojou superschopnosťou.',
+                    '2-6': 'V dospelosti si objavil silu lásky. Tvoja starostlivosť o druhých dáva tvojmu životu zmysel.',
+                    '2-7': 'V dospelosti si prehĺbil svoju duchovnosť. Hľadáš pravdu a nachádzaš ju v tichu.',
+                    '2-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej jemnosti.',
+                    '2-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si pomáhal druhým nájsť ich cestu.',
+                    '3-1': 'V dospelosti si sa stal sám sebou. Tvoja kreativita a charizma ti otvárajú dvere.',
+                    '3-2': 'V dospelosti si objavil silu harmónie. Tvoja prítomnosť spája ľudí.',
+                    '3-3': 'V dospelosti si našiel svoj hlas. Tvoja radosť zo života je nákazlivá a inšpiruje ostatných.',
+                    '3-4': 'V dospelosti si pochopil, že tvorivosť a tvrdá práca idú ruka v ruke. Tvoje dielo má pevné základy.',
+                    '3-5': 'V dospelosti si sa naučil tancovať so zmenou. Tvoja sloboda je v tvojej kreativite.',
+                    '3-6': 'V dospelosti si objavil silu srdca. Tvoja láska a starostlivosť sú tvojím najväčším darom.',
+                    '3-7': 'V dospelosti si prehĺbil svoju múdrosť. Tvoja tvorivosť je spojená s duchovnom.',
+                    '3-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej tvorivosti.',
+                    '3-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si prinášal radosť a inšpiráciu.',
+                    '4-1': 'V dospelosti si sa stal pánom svojho osudu. Tvoja vytrvalosť a odhodlanie ťa dovedú ďaleko.',
+                    '4-2': 'V dospelosti si našiel rovnováhu medzi prácou a vzťahmi. Tvoja stabilita je tvojou silou.',
+                    '4-3': 'V dospelosti si objavil radosť z tvorby. Tvoja praktickosť a kreativita sa spájajú.',
+                    '4-4': 'V dospelosti si buduješ impérium. Tvoje základy sú pevné a tvoja vytrvalosť nepozná hraníc.',
+                    '4-5': 'V dospelosti si sa naučil prijímať zmenu. Tvoja flexibilita a pevnosť idú ruka v ruke.',
+                    '4-6': 'V dospelosti si objavil silu rodiny a domova. Tvoja starostlivosť je tvojím darom.',
+                    '4-7': 'V dospelosti si prehĺbil svoju múdrosť. Tvoje hľadanie pravdy je neúprosné.',
+                    '4-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej vytrvalosti.',
+                    '4-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si budoval lepší svet.',
+                    '5-1': 'V dospelosti si sa stal slobodným. Tvoja nezávislosť je tvojou najväčšou hodnotou.',
+                    '5-2': 'V dospelosti si našiel harmóniu v pohybe. Tvoja adaptabilita je tvojou superschopnosťou.',
+                    '5-3': 'V dospelosti si objavil radosť z objavovania. Tvoja kreativita nemá hraníc.',
+                    '5-4': 'V dospelosti si pochopil, že sloboda potrebuje pevné základy. Tvoja štruktúra ti dáva voľnosť.',
+                    '5-5': 'V dospelosti si sa stal dobrodruhom. Tvoja cesta je o neustálom objavovaní.',
+                    '5-6': 'V dospelosti si objavil silu vzťahov. Tvoja sloboda je v tvojich putách s druhými.',
+                    '5-7': 'V dospelosti si prehĺbil svoju múdrosť. Tvoje dobrodružstvá sú aj duchovné.',
+                    '5-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej slobode.',
+                    '5-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si objavoval a inšpiroval.',
+                    '6-1': 'V dospelosti si sa stal ochrancom. Tvoja sila je v tvojej starostlivosti.',
+                    '6-2': 'V dospelosti si našiel harmóniu v láske. Tvoje vzťahy sú tvojím najväčším bohatstvom.',
+                    '6-3': 'V dospelosti si objavil radosť z dávarania. Tvoja láska je tvorivá a inšpirujúca.',
+                    '6-4': 'V dospelosti si pochopil, že láska potrebuje pevné základy. Tvoja rodina je tvojím koreňom.',
+                    '6-5': 'V dospelosti si sa naučil milovať slobodu. Tvoja láska je bezpodmienečná.',
+                    '6-6': 'V dospelosti si sa stal stelesnením lásky. Tvoja starostlivosť je tvojím darom pre svet.',
+                    '6-7': 'V dospelosti si prehĺbil svoju múdrosť. Tvoja láska je spojená s duchovnom.',
+                    '6-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej láske.',
+                    '6-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si miloval a liečil.',
+                    '7-1': 'V dospelosti si sa stal múdrym. Tvoja nezávislosť je v tvojom vnútri.',
+                    '7-2': 'V dospelosti si našiel harmóniu v tichu. Tvoja múdrosť je tvojím darom.',
+                    '7-3': 'V dospelosti si objavil radosť z poznania. Tvoja zvedavosť je nekonečná.',
+                    '7-4': 'V dospelosti si pochopil, že múdrosť potrebuje pevné základy. Tvoje poznanie je hlboké.',
+                    '7-5': 'V dospelosti si sa naučil hľadať pravdu v pohybe. Tvoja múdrosť je dynamická.',
+                    '7-6': 'V dospelosti si objavil silu srdca. Tvoja múdrosť je spojená s láskou.',
+                    '7-7': 'V dospelosti si sa stal mudrcom. Tvoja cesta je o neustálom hľadaní pravdy.',
+                    '7-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej múdrosti.',
+                    '7-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si prinášal svetlo a pravdu.',
+                    '8-1': 'V dospelosti si sa stal tvorcom. Tvoja sila je v tvojej odvahe.',
+                    '8-2': 'V dospelosti si našiel rovnováhu medzi mocou a citlivosťou. Tvoja sila je vyvážená.',
+                    '8-3': 'V dospelosti si objavil radosť z tvorby. Tvoja kreativita a moc sa spájajú.',
+                    '8-4': 'V dospelosti si pochopil, že moc potrebuje pevné základy. Tvoje dielo je trvalé.',
+                    '8-5': 'V dospelosti si sa naučil používať svoju moc na zmenu. Tvoja sila je transformačná.',
+                    '8-6': 'V dospelosti si objavil silu srdca. Tvoja moc je v tvojej starostlivosti.',
+                    '8-7': 'V dospelosti si prehĺbil svoju múdrosť. Tvoja moc je spojená s pravdou.',
+                    '8-8': 'V dospelosti si sa stal neochvejným. Tvoja moc je v tvojej vytrvalosti.',
+                    '8-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si pretváral svet.',
+                    '9-1': 'V dospelosti si sa stal humanistom. Tvoja sila je v tvojej empatii.',
+                    '9-2': 'V dospelosti si našiel harmóniu v službe druhým. Tvoj pokoj je v pomáhaní.',
+                    '9-3': 'V dospelosti si objavil radosť z inšpirácie. Tvoja kreativita slúži ľudstvu.',
+                    '9-4': 'V dospelosti si pochopil, že služba potrebuje pevné základy. Tvoje dielo je trvalé.',
+                    '9-5': 'V dospelosti si sa naučil inšpirovať zmenou. Tvoja sloboda slúži všetkým.',
+                    '9-6': 'V dospelosti si objavil silu lásky. Tvoja starostlivosť je tvojím darom pre svet.',
+                    '9-7': 'V dospelosti si prehĺbil svoju múdrosť. Tvoje poslanie je duchovné.',
+                    '9-8': 'V dospelosti si sa stal silným a sebavedomým. Tvoja moc je v tvojej službe.',
+                    '9-9': 'V dospelosti si objavil svoje poslanie. Si tu preto, aby si slúžil ľudstvu.'
+                };
+                const key = `${soulUrge}-${maturity}`;
+                return map[key] || map['1-1'];
+            }
+
+            function generatePresent(personalYear, personalMonth, personalDay) {
+                const map = {
+                    '1-1': 'Tento rok je o nových začiatkoch. Si na prahu niečoho veľkého. Tento mesiac je o sebapresadzovaní a dnešok o odvahe urobiť prvý krok.',
+                    '1-2': 'Tento rok je o vodcovstve. Tento mesiac sa učíš spolupracovať a dnešok ti prináša príležitosť na zmierenie.',
+                    '1-3': 'Tento rok je o sebarealizácii. Tento mesiac je o kreativite a dnešok o radosti z tvorby.',
+                    '1-4': 'Tento rok je o budovaní základov. Tento mesiac je o tvrdej práci a dnešok o vytrvalosti.',
+                    '1-5': 'Tento rok je o zmene. Tento mesiac je o dobrodružstve a dnešok o odvahe riskovať.',
+                    '1-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '1-7': 'Tento rok je o duchovnom raste. Tento mesiac je o hľadaní a dnešok o vnútornom pokoji.',
+                    '1-8': 'Tento rok je o moci a kariére. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '1-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '2-1': 'Tento rok je o spolupráci. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '2-2': 'Tento rok je o harmónii. Tento mesiac je o vzťahoch a dnešok o pokoji.',
+                    '2-3': 'Tento rok je o kreativite. Tento mesiac je o radosti a dnešok o inšpirácii.',
+                    '2-4': 'Tento rok je o stabilite. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '2-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '2-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '2-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '2-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '2-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '3-1': 'Tento rok je o kreativite. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '3-2': 'Tento rok je o radosti. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '3-3': 'Tento rok je o sebarealizácii. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '3-4': 'Tento rok je o tvorbe. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '3-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o dobrodružstve.',
+                    '3-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '3-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '3-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '3-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '4-1': 'Tento rok je o stabilite. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '4-2': 'Tento rok je o práci. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '4-3': 'Tento rok je o tvorbe. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '4-4': 'Tento rok je o budovaní. Tento mesiac je o vytrvalosti a dnešok o odhodlaní.',
+                    '4-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '4-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '4-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '4-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '4-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '5-1': 'Tento rok je o zmene. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '5-2': 'Tento rok je o slobode. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '5-3': 'Tento rok je o objavovaní. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '5-4': 'Tento rok je o transformácii. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '5-5': 'Tento rok je o dobrodružstve. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '5-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '5-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '5-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '5-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '6-1': 'Tento rok je o zodpovednosti. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '6-2': 'Tento rok je o starostlivosti. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '6-3': 'Tento rok je o láske. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '6-4': 'Tento rok je o rodine. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '6-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '6-6': 'Tento rok je o harmónii. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '6-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '6-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '6-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '7-1': 'Tento rok je o duchovnosti. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '7-2': 'Tento rok je o hľadaní. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '7-3': 'Tento rok je o vnútornom raste. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '7-4': 'Tento rok je o múdrosti. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '7-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '7-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '7-7': 'Tento rok je o hlbokom poznaní. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '7-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '7-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '8-1': 'Tento rok je o moci. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '8-2': 'Tento rok je o kariére. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '8-3': 'Tento rok je o úspechu. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '8-4': 'Tento rok je o budovaní impéria. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '8-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '8-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '8-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '8-8': 'Tento rok je o vrchole. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '8-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.',
+                    '9-1': 'Tento rok je o zavŕšení. Tento mesiac je o vodcovstve a dnešok o odvahe.',
+                    '9-2': 'Tento rok je o odpúšťaní. Tento mesiac je o harmónii a dnešok o pokoji.',
+                    '9-3': 'Tento rok je o ukončení. Tento mesiac je o kreativite a dnešok o radosti.',
+                    '9-4': 'Tento rok je o dozrievaní. Tento mesiac je o práci a dnešok o vytrvalosti.',
+                    '9-5': 'Tento rok je o zmene. Tento mesiac je o slobode a dnešok o objavovaní.',
+                    '9-6': 'Tento rok je o zodpovednosti. Tento mesiac je o starostlivosti a dnešok o láske.',
+                    '9-7': 'Tento rok je o duchovnosti. Tento mesiac je o hľadaní a dnešok o pokoji.',
+                    '9-8': 'Tento rok je o moci. Tento mesiac je o odhodlaní a dnešok o výsledkoch.',
+                    '9-9': 'Tento rok je o zavŕšení. Tento mesiac je o odpúšťaní a dnešok o prijatí.'
+                };
+                const key = `${personalYear}-${personalMonth}`;
+                let text = map[key] || map['1-1'];
+                // pridáme osobný deň
+                const dayMap = {
+                    '1': ' Dnes je deň na akciu. Urob krok, ktorý si odkladal.',
+                    '2': ' Dnes je deň na spoluprácu. Spoj sa s niekým, kto ti môže pomôcť.',
+                    '3': ' Dnes je deň na radosť. Nájdi si čas na to, čo ťa baví.',
+                    '4': ' Dnes je deň na prácu. Sústreď sa na svoje ciele.',
+                    '5': ' Dnes je deň na zmenu. Otvor sa novým možnostiam.',
+                    '6': ' Dnes je deň na starostlivosť. Obdaruj niekoho svojou pozornosťou.',
+                    '7': ' Dnes je deň na ticho. Nájdi chvíľu pre seba.',
+                    '8': ' Dnes je deň na výsledky. Zbieraj plody svojej práce.',
+                    '9': ' Dnes je deň na odpúšťanie. Nechaj minulosť minulosťou.'
+                };
+                text += dayMap[String(personalDay)] || ' Dnes je tvoj deň. Využi ho naplno.';
+                return text;
+            }
+
+            function generateFuture(maturity, personalYear) {
+                const map = {
+                    '1-1': 'Tvoja budúcnosť je o nezávislosti. Budeš stáť pevne na vlastných nohách a tvoj hlas bude počuť. Čaká ťa obdobie, keď budeš vodcom svojho vlastného života.',
+                    '1-2': 'Tvoja budúcnosť je o spolupráci. Naučíš sa dôverovať iným a tvoja cesta bude o spoločnom raste.',
+                    '1-3': 'Tvoja budúcnosť je o kreativite. Tvoj talent sa rozvinie a ty prinesieš svetu niečo nové.',
+                    '1-4': 'Tvoja budúcnosť je o stabilite. Vybuduješ si pevné zázemie, na ktoré sa budeš môcť spoľahnúť.',
+                    '1-5': 'Tvoja budúcnosť je o slobode. Oslobodíš sa od obmedzení a začneš žiť podľa svojich pravidiel.',
+                    '1-6': 'Tvoja budúcnosť je o láske. Nájdeš svoje miesto v srdci a v srdciach iných.',
+                    '1-7': 'Tvoja budúcnosť je o múdrosti. Staneš sa zdrojom poznania a inšpirácie pre ostatných.',
+                    '1-8': 'Tvoja budúcnosť je o moci. Dosiahneš veľké veci a tvoj vplyv bude citeľný.',
+                    '1-9': 'Tvoja budúcnosť je o naplnení. Dosiahneš to, po čom si vždy túžil.',
+                    '2-1': 'Tvoja budúcnosť je o spolupráci s osudom. Tvoja cesta sa otvára novým možnostiam.',
+                    '2-2': 'Tvoja budúcnosť je o harmónii. Nájdeš pokoj a rovnováhu vo svojom živote.',
+                    '2-3': 'Tvoja budúcnosť je o radosti. Tvoj život bude plný krásy a tvorivosti.',
+                    '2-4': 'Tvoja budúcnosť je o stabilite. Pevné základy ti umožnia rásť.',
+                    '2-5': 'Tvoja budúcnosť je o zmene. Budem prijímať nové výzvy s otvoreným srdcom.',
+                    '2-6': 'Tvoja budúcnosť je o láske. Tvoje vzťahy budú hlboké a naplňujúce.',
+                    '2-7': 'Tvoja budúcnosť je o duchovnosti. Nájdeš odpovede na svoje otázky.',
+                    '2-8': 'Tvoja budúcnosť je o úspechu. Tvoja tvrdá práca prinesie ovocie.',
+                    '2-9': 'Tvoja budúcnosť je o naplnení. Dosiahneš svoj cieľ.',
+                    '3-1': 'Tvoja budúcnosť je o kreativite. Tvoje nápady zmenia svet.',
+                    '3-2': 'Tvoja budúcnosť je o harmónii. Nájdeš rovnováhu medzi svojimi snami a realitou.',
+                    '3-3': 'Tvoja budúcnosť je o radosti. Tvoj život bude plný smiechu a lásky.',
+                    '3-4': 'Tvoja budúcnosť je o tvorbe. Vybuduješ niečo trvalé.',
+                    '3-5': 'Tvoja budúcnosť je o slobode. Oslobodíš svoju kreativitu.',
+                    '3-6': 'Tvoja budúcnosť je o láske. Tvoja starostlivosť bude mať veľký dosah.',
+                    '3-7': 'Tvoja budúcnosť je o múdrosti. Tvoja tvorba bude inšpirovaná duchovnom.',
+                    '3-8': 'Tvoja budúcnosť je o moci. Tvoj talent ti prinesie uznanie.',
+                    '3-9': 'Tvoja budúcnosť je o naplnení. Tvoje dielo bude mať zmysel.',
+                    '4-1': 'Tvoja budúcnosť je o stabilite. Vybuduješ si pevné zázemie.',
+                    '4-2': 'Tvoja budúcnosť je o spolupráci. Tvoje vzťahy ti dajú silu.',
+                    '4-3': 'Tvoja budúcnosť je o kreativite. Tvoja tvrdá práca prinesie krásne výsledky.',
+                    '4-4': 'Tvoja budúcnosť je o budovaní. Staneš sa architektom svojho života.',
+                    '4-5': 'Tvoja budúcnosť je o zmene. Tvoja stabilita ti umožní prijímať nové výzvy.',
+                    '4-6': 'Tvoja budúcnosť je o láske. Tvoja rodina bude tvojím najväčším bohatstvom.',
+                    '4-7': 'Tvoja budúcnosť je o múdrosti. Tvoje skúsenosti ťa premenia.',
+                    '4-8': 'Tvoja budúcnosť je o moci. Tvoja vytrvalosť prinesie ovocie.',
+                    '4-9': 'Tvoja budúcnosť je o naplnení. Tvoje dielo bude trvalé.',
+                    '5-1': 'Tvoja budúcnosť je o slobode. Budeš žiť podľa svojich pravidiel.',
+                    '5-2': 'Tvoja budúcnosť je o harmónii. Tvoja sloboda bude v súlade s ostatnými.',
+                    '5-3': 'Tvoja budúcnosť je o kreativite. Tvoja sloboda ti umožní tvoriť.',
+                    '5-4': 'Tvoja budúcnosť je o stabilite. Tvoja sloboda bude mať pevné základy.',
+                    '5-5': 'Tvoja budúcnosť je o dobrodružstve. Tvoj život bude plný objavov.',
+                    '5-6': 'Tvoja budúcnosť je o láske. Nájdeš slobodu v oddanosti.',
+                    '5-7': 'Tvoja budúcnosť je o múdrosti. Tvoje dobrodružstvá ťa obohatia.',
+                    '5-8': 'Tvoja budúcnosť je o moci. Tvoja sloboda ti prinesie úspech.',
+                    '5-9': 'Tvoja budúcnosť je o naplnení. Tvoje dobrodružstvá ťa dovedú k cieľu.',
+                    '6-1': 'Tvoja budúcnosť je o láske. Tvoja starostlivosť bude mať veľký dosah.',
+                    '6-2': 'Tvoja budúcnosť je o harmónii. Tvoje vzťahy budú naplňujúce.',
+                    '6-3': 'Tvoja budúcnosť je o kreativite. Tvoja láska bude inšpirovať.',
+                    '6-4': 'Tvoja budúcnosť je o stabilite. Tvoja rodina bude tvojím koreňom.',
+                    '6-5': 'Tvoja budúcnosť je o slobode. Tvoja láska bude bezpodmienečná.',
+                    '6-6': 'Tvoja budúcnosť je o harmónii. Tvoj život bude naplnený láskou.',
+                    '6-7': 'Tvoja budúcnosť je o múdrosti. Tvoja láska bude duchovná.',
+                    '6-8': 'Tvoja budúcnosť je o moci. Tvoja starostlivosť ti prinesie uznanie.',
+                    '6-9': 'Tvoja budúcnosť je o naplnení. Tvoja láska bude mať zmysel.',
+                    '7-1': 'Tvoja budúcnosť je o múdrosti. Staneš sa zdrojom poznania.',
+                    '7-2': 'Tvoja budúcnosť je o harmónii. Nájdeš pokoj vo svojom vnútri.',
+                    '7-3': 'Tvoja budúcnosť je o kreativite. Tvoja múdrosť bude inšpirovať.',
+                    '7-4': 'Tvoja budúcnosť je o stabilite. Tvoja múdrosť bude mať pevné základy.',
+                    '7-5': 'Tvoja budúcnosť je o slobode. Tvoja múdrosť ťa oslobodí.',
+                    '7-6': 'Tvoja budúcnosť je o láske. Tvoja múdrosť bude slúžiť iným.',
+                    '7-7': 'Tvoja budúcnosť je o hlbokom poznaní. Nájdeš odpovede.',
+                    '7-8': 'Tvoja budúcnosť je o moci. Tvoja múdrosť ti prinesie vplyv.',
+                    '7-9': 'Tvoja budúcnosť je o naplnení. Tvoja cesta bude zmysluplná.',
+                    '8-1': 'Tvoja budúcnosť je o moci. Tvoja sila bude neochvejná.',
+                    '8-2': 'Tvoja budúcnosť je o harmónii. Tvoja moc bude v službách dobra.',
+                    '8-3': 'Tvoja budúcnosť je o kreativite. Tvoja moc bude tvorivá.',
+                    '8-4': 'Tvoja budúcnosť je o stabilite. Tvoja moc bude mať pevné základy.',
+                    '8-5': 'Tvoja budúcnosť je o slobode. Tvoja moc ťa oslobodí.',
+                    '8-6': 'Tvoja budúcnosť je o láske. Tvoja moc bude slúžiť iným.',
+                    '8-7': 'Tvoja budúcnosť je o múdrosti. Tvoja moc bude spojená s pravdou.',
+                    '8-8': 'Tvoja budúcnosť je o vrchole. Dosiahneš veľké veci.',
+                    '8-9': 'Tvoja budúcnosť je o naplnení. Tvoja moc bude mať zmysel.',
+                    '9-1': 'Tvoja budúcnosť je o naplnení. Dosiahneš to, po čom si vždy túžil.',
+                    '9-2': 'Tvoja budúcnosť je o harmónii. Nájdeš pokoj a zmierenie.',
+                    '9-3': 'Tvoja budúcnosť je o kreativite. Tvoja cesta bude inšpiratívna.',
+                    '9-4': 'Tvoja budúcnosť je o stabilite. Tvoje dielo bude trvalé.',
+                    '9-5': 'Tvoja budúcnosť je o slobode. Oslobodíš sa od minulosti.',
+                    '9-6': 'Tvoja budúcnosť je o láske. Tvoja starostlivosť bude mať veľký dosah.',
+                    '9-7': 'Tvoja budúcnosť je o múdrosti. Nájdeš odpovede na svoje otázky.',
+                    '9-8': 'Tvoja budúcnosť je o moci. Tvoja sila prinesie zmenu.',
+                    '9-9': 'Tvoja budúcnosť je o zavŕšení. Tvoja cesta bude naplnená.'
+                };
+                const key = `${maturity}-${personalYear}`;
+                return map[key] || map['1-1'];
+            }
+
+            function generateTruth(allNumbers) {
+                // allNumbers = [lifePath, design, destiny, soulUrge, personality, personalYear, personalMonth, personalDay, challenge, maturity]
+                const intro = "A teraz ti poviem niečo, čo možno nechceš počuť – ale potrebuješ. Toto, čo si práve prečítal, nie je veštenie. Nie je to mágia. Je to výpočet – tvoje meno, tvoj dátum narodenia a dnešný deň. A predsa... sadlo ti to, však?";
+                const manipulation = "Práve preto to robíme. Aby si videl, aké ľahké je vytvoriť ilúziu, že niekto ‚vidí‘ tvoju dušu. V skutočnosti ide o čísla a vzorce. O psychológiu a štatistiku. Keby ti to isté povedal veštec v plášti, možno by si mu uveril. A možno by si mu aj zaplatil. Ale ty teraz vieš, že to nie je žiadne tajomstvo – je to len výpočet.";
+                const conclusion = "A to je tvoja zbraň. Lebo keď vieš, ako to funguje, prestávaš byť obeťou. Toto je nástroj na sebapoznanie, nie na závislosť. Použi ho na to, aby si videl svoje vzorce – a aby si sa rozhodol, ktoré si necháš a ktoré zmeníš. Lebo tvoje vzorce nie sú tvoj osud. Sú to len programy, ktoré si si osvojil – a ktoré môžeš prepísať.";
+                return `${intro}\n\n${manipulation}\n\n${conclusion}`;
+            }
+
+            function generateConclusion() {
+                return "Tvoja najväčšia sila? Že si to celé prečítal až sem. A teraz, keď už vieš, ako to funguje... čo s tým spravíš? Tvoja cesta je tvoja. Tvoja sloboda je tvoja. Tvoja voľba je tvoja.";
+            }
+
+            // ================================================================
+            // 4. APP – RIADIACA LOGIKA
+            // ================================================================
+            const app = {
+                init() {
+                    this.cacheDom();
+                    this.bindEvents();
+                    this.populateDates();
+                    this.updateLanguage('sk');
+                },
+
+                cacheDom() {
+                    this.dom = {
+                        langButtons: document.querySelectorAll('.lang-selector button'),
+                        fullName: document.getElementById('fullName'),
+                        birthDay: document.getElementById('birthDay'),
+                        birthMonth: document.getElementById('birthMonth'),
+                        birthYear: document.getElementById('birthYear'),
+                        genderButtons: document.querySelectorAll('.gender-toggle button'),
+                        btnStart: document.getElementById('btnStart'),
+                        btnRestart: document.getElementById('btnRestart'),
+                        formSection: document.getElementById('formSection'),
+                        resultsContainer: document.getElementById('resultsContainer'),
+                        outputWrapper: document.getElementById('outputWrapper'),
+                        appTitle: document.getElementById('appTitle'),
+                        subBrand: document.getElementById('subBrand'),
+                    };
+                    this.lang = 'sk';
+                    this.gender = 'm';
+                },
+
+                bindEvents() {
+                    this.dom.langButtons.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            this.updateLanguage(btn.dataset.lang);
+                        });
                     });
-                });
 
-                this.dom.genderButtons.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.dom.genderButtons.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        this.gender = btn.dataset.gender;
-                        document.body.className = this.gender === 'f' ? 'female' : '';
+                    this.dom.genderButtons.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            this.dom.genderButtons.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            this.gender = btn.dataset.gender;
+                            document.body.className = this.gender === 'f' ? 'female' : '';
+                        });
                     });
-                });
 
-                this.dom.btnStart.addEventListener('click', () => this.startAnalysis());
+                    this.dom.btnStart.addEventListener('click', () => this.startAnalysis());
+                    this.dom.btnRestart.addEventListener('click', () => this.restart());
+                    this.dom.fullName.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') this.startAnalysis();
+                    });
+                },
 
-                this.dom.btnRestart.addEventListener('click', () => this.restart());
+                populateDates() {
+                    const daySel = this.dom.birthDay;
+                    for (let i = 1; i <= 31; i++) {
+                        const opt = document.createElement('option');
+                        opt.value = i;
+                        opt.textContent = i;
+                        daySel.appendChild(opt);
+                    }
+                    const yearSel = this.dom.birthYear;
+                    const curYear = new Date().getFullYear();
+                    for (let y = curYear; y >= 1920; y--) {
+                        const opt = document.createElement('option');
+                        opt.value = y;
+                        opt.textContent = y;
+                        yearSel.appendChild(opt);
+                    }
+                },
 
-                this.dom.fullName.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') this.startAnalysis();
-                });
-            },
+                updateLanguage(lang) {
+                    this.lang = lang;
+                    const t = LANG[lang];
+                    if (!t) return;
 
-            populateDates() {
-                const daySel = this.dom.birthDay;
-                for (let i = 1; i <= 31; i++) {
-                    const opt = document.createElement('option');
-                    opt.value = i;
-                    opt.textContent = i;
-                    daySel.appendChild(opt);
-                }
+                    this.dom.langButtons.forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.lang === lang);
+                    });
 
-                const yearSel = this.dom.birthYear;
-                const curYear = new Date().getFullYear();
-                for (let y = curYear; y >= 1920; y--) {
-                    const opt = document.createElement('option');
-                    opt.value = y;
-                    opt.textContent = y;
-                    yearSel.appendChild(opt);
-                }
-            },
+                    this.dom.appTitle.textContent = t.title;
+                    this.dom.subBrand.textContent = t.brand;
+                    document.getElementById('lblName').textContent = t.name;
+                    this.dom.fullName.placeholder = t.namePlaceholder;
+                    document.getElementById('lblBirth').textContent = t.birth;
+                    document.getElementById('lblGender').textContent = t.gender;
+                    this.dom.genderButtons.forEach(btn => {
+                        if (btn.dataset.gender === 'm') btn.textContent = t.male;
+                        else btn.textContent = t.female;
+                    });
+                    this.dom.btnStart.textContent = t.start;
+                    this.dom.btnRestart.textContent = t.restart;
+                },
 
-            updateLanguage(lang) {
-                this.lang = lang;
-                const t = LANG[lang];
-                if (!t) return;
+                startAnalysis() {
+                    const name = this.dom.fullName.value.trim();
+                    const day = parseInt(this.dom.birthDay.value);
+                    const month = parseInt(this.dom.birthMonth.value);
+                    const year = parseInt(this.dom.birthYear.value);
 
-                this.dom.langButtons.forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.lang === lang);
-                });
+                    if (!name || !day || !month || !year) {
+                        alert(LANG[this.lang].alert);
+                        return;
+                    }
 
-                this.dom.appTitle.textContent = t.title;
-                this.dom.subBrand.textContent = t.brand;
-                document.getElementById('lblName').textContent = t.name;
-                this.dom.fullName.placeholder = t.namePlaceholder;
-                document.getElementById('lblBirth').textContent = t.birth;
-                document.getElementById('lblGender').textContent = t.gender;
-                this.dom.genderButtons.forEach(btn => {
-                    if (btn.dataset.gender === 'm') btn.textContent = t.male;
-                    else btn.textContent = t.female;
-                });
-                this.dom.btnStart.textContent = t.start;
-                this.dom.btnRestart.textContent = t.restart;
-            },
+                    // 1. VŠETKY VÝPOČTY (skryté)
+                    const birthStr = `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
+                    const designStr = getAdjustedDate(year, month, day, -88);
 
-            startAnalysis() {
-                const name = this.dom.fullName.value.trim();
-                const day = this.dom.birthDay.value;
-                const month = this.dom.birthMonth.value;
-                const year = this.dom.birthYear.value;
+                    const lifePath = numerologySum(birthStr);
+                    const design = numerologySum(designStr);
+                    const destiny = nameToNumber(name);
+                    const soulUrge = getVowelsSum(name);
+                    const personality = getConsonantsSum(name);
+                    const personalYear = getPersonalYear(day, month, year);
+                    const personalMonth = getPersonalMonth(personalYear);
+                    const personalDay = getPersonalDay(personalYear, personalMonth);
+                    const challenge = getChallenge(day, month);
+                    const maturity = getMaturity(lifePath, destiny);
 
-                if (!name || !day || !month || !year) {
-                    alert(LANG[this.lang].alert);
-                    return;
-                }
+                    // 2. GENEROVANIE TEXTU (použijeme všetky čísla)
+                    const t = LANG[this.lang];
+                    const parts = t.parts;
+                    const tags = t.tags;
 
-                const adjusted = getAdjustedBirthDate(parseInt(year), parseInt(month), parseInt(day));
-                this.lifePath = numerologySum(adjusted);
-                this.destiny = nameToNumber(name);
-                const genderOffset = this.gender === 'f' ? 1 : 0;
-                this.seed = (this.lifePath * 7 + this.destiny * 13 + parseInt(year) + genderOffset) % 3;
+                    const introText = generateIntro(lifePath, design);
+                    const childhoodText = generateChildhood(lifePath, challenge);
+                    const teenText = generateTeen(destiny, personality);
+                    const adultText = generateAdult(soulUrge, maturity);
+                    const presentText = generatePresent(personalYear, personalMonth, personalDay);
+                    const futureText = generateFuture(maturity, personalYear);
+                    const truthText = generateTruth([lifePath, design, destiny, soulUrge, personality, personalYear, personalMonth, personalDay, challenge, maturity]);
+                    const conclusionText = generateConclusion();
 
-                this.showResults(name);
-            },
-
-            showResults(name) {
-                const t = LANG[this.lang];
-                const db = TEXT_DB[this.lang] || TEXT_DB.sk;
-                const s = this.seed;
-                const genderLabel = this.gender === 'm' ? t.maleLabel : t.femaleLabel;
-
-                // meta
-                this.dom.metaTags.innerHTML = `
-                    <span class="meta-pill">${t.subject}: <strong>${name}</strong></span>
-                    <span class="meta-pill">${t.lifeCode}: <strong>${this.lifePath}</strong></span>
-                    <span class="meta-pill">${t.destiny}: <strong>${this.destiny}</strong></span>
-                    <span class="meta-pill">${t.polarity}: <strong>${genderLabel}</strong></span>
-                `;
-
-                // karty
-                const keys = ['childhood', 'teen', 'adult', 'today', 'shadow', 'future', 'motivation', 'override', 'radar', 'daily'];
-                const phases = t.phases;
-                const tags = t.tags;
-                let html = '';
-
-                keys.forEach((key, idx) => {
-                    const texts = db[key] || db.childhood;
-                    const text = texts[s % texts.length];
-                    const phaseName = phases[idx] || key;
-                    const tagText = tags[idx] || '';
-                    html += `
-                        <div class="result-card">
-                            <div class="phase">
-                                <h3>${idx + 1}. ${phaseName}</h3>
-                                <span class="tag">${tagText}</span>
-                            </div>
-                            <p>${text}</p>
+                    // 3. ZOBRAZENIE
+                    const html = `
+                        <div class="result-block">
+                            <div class="title">${parts.intro} <span class="tag">${tags.intro}</span></div>
+                            <p>${introText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.childhood} <span class="tag">${tags.childhood}</span></div>
+                            <p>${childhoodText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.teen} <span class="tag">${tags.teen}</span></div>
+                            <p>${teenText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.adult} <span class="tag">${tags.adult}</span></div>
+                            <p>${adultText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.present} <span class="tag">${tags.present}</span></div>
+                            <p>${presentText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.future} <span class="tag">${tags.future}</span></div>
+                            <p>${futureText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.truth} <span class="tag">${tags.truth}</span></div>
+                            <p style="white-space:pre-line;">${truthText}</p>
+                        </div>
+                        <div class="result-block">
+                            <div class="title">${parts.conclusion} <span class="tag">${tags.conclusion}</span></div>
+                            <p>${conclusionText}</p>
                         </div>
                     `;
-                });
 
-                this.dom.cardsWrapper.innerHTML = html;
+                    this.dom.outputWrapper.innerHTML = html;
+                    this.dom.formSection.style.display = 'none';
+                    this.dom.resultsContainer.classList.add('active');
+                    this.dom.resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                },
 
-                // skryť formulár, zobraziť výsledky
-                this.dom.formSection.style.display = 'none';
-                this.dom.resultsContainer.classList.add('active');
-                this.dom.resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            },
+                restart() {
+                    this.dom.resultsContainer.classList.remove('active');
+                    this.dom.formSection.style.display = 'block';
+                    this.dom.outputWrapper.innerHTML = '';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
 
-            restart() {
-                this.dom.resultsContainer.classList.remove('active');
-                this.dom.formSection.style.display = 'block';
-                this.dom.cardsWrapper.innerHTML = '';
-                this.dom.metaTags.innerHTML = '';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', () => app.init());
-        window.app = app;
-    })();
-</script>
+            document.addEventListener('DOMContentLoaded', () => app.init());
+            window.app = app;
+        })();
+    </script>
 </body>
 </html>
